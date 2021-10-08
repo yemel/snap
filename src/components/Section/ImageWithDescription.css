@@ -1,0 +1,30 @@
+.Container-Background {
+  display: flex;
+}
+.Container {
+  padding-top: 80px;
+  padding-bottom: 80px;
+  margin-left: 300px;
+  margin-right: 300px;
+}
+.grid {
+  margin-top: -1rem;
+  margin-bottom: -1rem;
+  margin-left: -1rem;
+  margin-right: -1rem;
+}
+.row {
+  display: flex;
+  justify-content: center;
+  padding: 0;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.image {
+}
+
+.text {
+  padding-left: 50px;
+  padding-right: 50px;
+}
