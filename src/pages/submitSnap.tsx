@@ -17,76 +17,77 @@ const SubmitSnap = () => {
   // END Image Picker
 
   return (
-    <div className={classes.MainDiv}>
-      <div className={classes.AllItems}>
-        <div className={classes.Header}>
-          <Title>Upload your best Snap</Title>
-          <Paragraph>only ONE per day</Paragraph>
-        </div>
-
-        <ImageSelector
-          title="Display Image"
-          description="File types supported: JPG and PNG. Max size: 40 MB"
-          onChange={imagePickerHandler}
-        />
-        <div className={classes.formcontrol}>
-          <label htmlFor="name">Title</label>
-          <input
-            type="text"
-            id="name"
-            // value={EventName}
-            // onChange={EventNameChangeHandler}
-            // onBlur={EventNameBlurHandler}
-            placeholder="Snap Name"
-          />
-        </div>
-        <div className={classes.formcontrol}>
-          <label htmlFor="name">Description</label>
-          <input
-            type="text"
-            id="name"
-            // value={EventName}
-            // onChange={EventNameChangeHandler}
-            // onBlur={EventNameBlurHandler}
-            placeholder="Description"
-          />
-        </div>
-        <div className={classes.formcontrol}>
-          <label htmlFor="name">Tags</label>
-          <input
-            type="text"
-            id="name"
-            // value={EventName}
-            // onChange={EventNameChangeHandler}
-            // onBlur={EventNameBlurHandler}
-            placeholder="Tags"
-          />
-        </div>
-        <div className={classes.formcontrol}>
-          <label htmlFor="name">Time Date</label>
-          <input
-            type="text"
-            id="name"
-            // value={EventName}
-            // onChange={EventNameChangeHandler}
-            // onBlur={EventNameBlurHandler}
-            placeholder="Enter the date when the picture was taken"
-          />
-        </div>
-        <div className={classes.formcontrol}>
-          <label htmlFor="name">Location</label>
-          <input
-            type="text"
-            id="name"
-            // value={EventName}
-            // onChange={EventNameChangeHandler}
-            // onBlur={EventNameBlurHandler}
-            placeholder="Enter (X,Y) location"
-          />
-        </div>
-        <Button primary>Submit</Button>
+    <>
+      <div className={classes.Header}>
+        <Title>Upload your best Snap</Title>
+        <Paragraph>only ONE per day</Paragraph>
       </div>
-    </div>
+      <div className={classes.MainDiv}>
+        <div className={classes.AllItems}>
+          <ImageSelector
+            title="Display Image"
+            description="File types supported: JPG and PNG. Max size: 40 MB"
+            onChange={imagePickerHandler}
+          />
+          <div className={classes.formcontrol}>
+            <label htmlFor="name">Title</label>
+            <input
+              type="text"
+              id="name"
+              // value={EventName}
+              // onChange={EventNameChangeHandler}
+              // onBlur={EventNameBlurHandler}
+              placeholder="Snap Name"
+            />
+          </div>
+          <div className={classes.formcontrol}>
+            <label htmlFor="name">Description</label>
+            <input
+              type="text"
+              id="name"
+              // value={EventName}
+              // onChange={EventNameChangeHandler}
+              // onBlur={EventNameBlurHandler}
+              placeholder="Description"
+            />
+          </div>
+          <div className={classes.formcontrol}>
+            <label htmlFor="name">Tags</label>
+            <input
+              type="text"
+              id="name"
+              // value={EventName}
+              // onChange={EventNameChangeHandler}
+              // onBlur={EventNameBlurHandler}
+              placeholder="Tags"
+            />
+          </div>
+          <div className={classes.formcontrol}>
+            <label htmlFor="name">Time Date</label>
+            <input
+              type="text"
+              id="name"
+              // value={EventName}
+              // onChange={EventNameChangeHandler}
+              // onBlur={EventNameBlurHandler}
+              placeholder="Enter the date when the picture was taken"
+            />
+          </div>
+          <div className={classes.formcontrol}>
+            <label htmlFor="name">Location</label>
+            <input
+              type="text"
+              id="name"
+              // value={EventName}
+              // onChange={EventNameChangeHandler}
+              // onBlur={EventNameBlurHandler}
+              placeholder="Enter (X,Y) location"
+            />
+          </div>
+          <Button primary>Submit</Button>
+        </div>
+      </div>
+    </>
   )
 }
 
