@@ -1,0 +1,253 @@
+.MainDiv {
+  display: flex;
+  justify-content: center;
+}
+
+.Header {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  align-items: center;
+  background-image: url("../../public/MarketplaceBackground.jpg");
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover; /* Resize the background image to cover the entire container */
+  box-shadow: inset 0 0 0 1000px rgba(0, 0, 0, 0.6);
+}
+
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
+
+.app {
+  max-width: 100%;
+  border-radius: 12px;
+  background-color: white;
+}
+
+.formcontrol {
+  margin-bottom: 1rem;
+}
+
+.formcontrol input,
+.formcontrol label {
+  display: block;
+}
+
+.formcontrol label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.formcontrol input,
+.formcontrol select {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  width: 100%;
+}
+
+.formcontrol input:focus {
+  outline: none;
+  border-color: #ff2d60;
+  background-color: #ff2d6150;
+}
+
+.control-group {
+  display: flex;
+  column-gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.control-group .formcontrol {
+  min-width: 15rem;
+  flex: 1;
+}
+
+/* .button {
+  font: inherit;
+  background-color: #240370;
+  color: white;
+  border: 1px solid #240370;
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button:hover,
+.button:active {
+  background-color: #33059e;
+  border-color: #33059e;
+}
+
+.button:disabled,
+.button:disabled:hover,
+.button:disabled:active {
+  background-color: #ccc;
+  color: #292929;
+  border-color: #ccc;
+  cursor: not-allowed;
+} */
+
+.formactions {
+  text-align: right;
+}
+
+.formactions button {
+  margin-left: 1rem;
+}
+
+.invalid input {
+  border: 1px solid #b40e0e;
+  background-color: #fddddd;
+}
+
+.invalid input:focus {
+  border-color: #ff8800;
+  background-color: #fbe8d2;
+}
+
+.error-text {
+  color: #b40e0e;
+}
+
+.Button {
+  margin-top: 50px;
+  width: 150px;
+  display: flex;
+  border-radius: 5px;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 20px;
+  background-color: rgb(32, 129, 226);
+  border: 1px solid rgb(32, 129, 226);
+  color: rgb(255, 255, 255);
+}
+
+.Button:hover {
+  cursor: pointer;
+  background-color: rgb(25, 103, 180);
+}
+
+.Button:disabled {
+  cursor: default;
+  opacity: 0.2;
+}
+
+.BackButton {
+  margin-top: 50px;
+  width: 150px;
+  display: flex;
+  border-radius: 5px;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 20px;
+  background-color: gray;
+  border: 1px solid gray;
+  color: rgb(255, 255, 255);
+}
+
+.BackButton:hover {
+  cursor: pointer;
+  background-color: rgb(97, 95, 95);
+}
+
+.ButtonsWrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+.textArea {
+  margin-top: 0px;
+  margin-bottom: 0px;
+  height: 253px;
+  border-radius: 5px;
+  border: 1px solid rgb(229, 232, 235);
+  background-color: rgb(255, 255, 255);
+  height: auto;
+  padding: 16px 12px;
+  resize: vertical;
+  width: 100%;
+  overflow: auto;
+}
+
+.textArea:focus {
+  box-shadow: rgba(4, 17, 29, 0.3) 0px 0px 4px 0px;
+  outline: none;
+}
+
+.selector-control {
+  margin-bottom: 1rem;
+}
+
+.selector-control input,
+.selector-control label {
+  display: block;
+}
+
+.selector-control label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.selector-control input,
+.selector-control select,
+.selector-control span {
+  font: inherit;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.selector-control input:focus {
+  outline: none;
+}
+
+.calendarBox {
+  display: flex;
+  /* border: #e9e7e7;
+  border-style: solid;
+  border-radius: 2px; */
+  margin-bottom: 10px;
+  /* width: fit-content; */
+}
+
+.calendarBox span {
+  margin: 10px;
+  width: 1rem;
+  height: 2rem;
+}
+
+.calendarBox label {
+  font-weight: bold;
+}
+
+.calendarBox input {
+  border: none;
+  font-size: medium;
+}
+
+@media (max-width: 768px) {
+  .app {
+    max-width: 43rem;
+  }
+}
+
+@media (max-width: 425px) {
+  .app {
+    max-width: 43rem;
+  }
+}
+
+@media (max-width: 375px) {
+  .app {
+    max-width: 17rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .app {
+    max-width: 16rem;
+    padding: 10px;
+  }
+}
