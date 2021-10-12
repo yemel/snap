@@ -35,6 +35,7 @@
   },
   "homepage": "https://github.com/decentraland/snapshot#readme",
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@mui/icons-material": "^5.0.3",
     "@snapshot-labs/snapshot.js": "^0.1.11",
