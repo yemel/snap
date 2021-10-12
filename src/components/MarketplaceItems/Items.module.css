@@ -1,0 +1,145 @@
+.assetsSearchView {
+  flex: 1 0 0%;
+  min-width: 0px;
+  padding: 0px 28px;
+}
+
+@media (max-width: 1440px) {
+  .assetsSearchView {
+    padding: 0px 102px;
+  }
+}
+@media (max-width: 1024px) {
+  .assetsSearchView {
+    padding: 0px 47px;
+  }
+}
+@media (max-width: 768px) {
+  .assetsSearchView {
+    padding: 0px 70px;
+  }
+}
+@media (max-width: 425px) {
+  .assetsSearchView {
+    padding: 0px 60px;
+  }
+}
+@media (max-width: 375px) {
+  .assetsSearchView {
+    padding: 0px 28px;
+  }
+}
+@media (max-width: 320px) {
+  .assetsSearchView {
+    padding: 0px;
+  }
+}
+
+.assetsSearchViewFilters {
+  flex-flow: row wrap;
+  justify-content: flex-end;
+  padding: 0px 8px;
+  display: flex;
+  align-items: center;
+  margin: 24px 0px 10px;
+  max-width: none;
+}
+
+.assetsSearchViewFilters1 {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+  /* margin-left: 0px;
+    margin-top: 0px; */
+  z-index: 3;
+  max-width: 100%;
+}
+
+.assetsSearchViewFilters2 {
+  margin-right: 8px;
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  border: 1px solid rgb(229, 232, 235);
+  width: 100%;
+  padding: 12px;
+}
+
+.assetsSearchViewFilters2Input {
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  line-height: 22px;
+}
+
+.assetsSearchViewFilters22 {
+  margin-left: 12px;
+  justify-content: center;
+  flex-direction: column;
+  display: flex;
+}
+
+.assetsSearchViewFilters3 {
+  height: 50px;
+  cursor: pointer;
+  display: flex;
+  background-color: rgb(255, 255, 255);
+  border-radius: 5px;
+  border: 1px solid rgb(229, 232, 235);
+  width: 100%;
+  padding: 12px;
+}
+
+.assetsSearchViewSeparator {
+  display: flex;
+  margin: 24px 0px 0px 8px;
+}
+
+.assetsSearchViewSeparatorInside {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.assetsSearchViewBody {
+  padding: 16px 0px;
+}
+
+.assetsSearchViewBody2 {
+  width: 100%;
+  overflow-x: hidden;
+  padding-top: 8px;
+  margin-top: -8px;
+}
+
+.assetsSearchViewBody3 {
+  display: flex;
+  flex-wrap: wrap;
+  width: calc(100% + 100px);
+}
+
+.InfiniteScroll {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.priceChangeModal {
+  z-index: 9999;
+  visibility: visible;
+  position: absolute;
+  inset: 0px auto auto 0px;
+  margin: 0px;
+  transform: translate3d(1192px, 158px, 0px);
+  box-shadow: rgba(4, 17, 29, 0.2) 0px 0px 8px 0px;
+}
+.priceChangeModalWrapper {
+  display: flex;
+  background-color: rgb(255, 255, 255);
+  padding: 10px;
+  width: 12rem;
+  border-bottom: 1px solid rgb(229, 232, 235);
+}
