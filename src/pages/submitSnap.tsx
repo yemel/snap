@@ -1,35 +1,34 @@
 import React, { useState, useReducer } from "react"
 import useFormatMessage from "decentraland-gatsby/dist/hooks/useFormatMessage"
 import ImageSelector from "../components/UI/ImageSelector"
-import classes from "./submitSnap.module.css"
+import "./submitSnap.css"
 import { Button } from "decentraland-ui/dist/components/Button/Button"
 import Title from "decentraland-gatsby/dist/components/Text/Title"
-import SubTitle from "decentraland-gatsby/dist/components/Text/SubTitle"
 import Paragraph from "decentraland-gatsby/dist/components/Text/Paragraph"
 
 const SubmitSnap = () => {
   const l = useFormatMessage()
   // Image Picker
   const [imagePickerState, SetImagePickerState] = useState()
-  const imagePickerHandler = (image) => {
+  const imagePickerHandler = (image: any) => {
     SetImagePickerState(image)
   }
   // END Image Picker
 
   return (
     <>
-      <div className={classes.Header}>
+      <div className="Header">
         <Title>Upload your best Snap</Title>
         <Paragraph>only ONE per day</Paragraph>
       </div>
-      <div className={classes.MainDiv}>
-        <div className={classes.AllItems}>
+      <div className="MainDiv">
+        <div className="AllItems">
           <ImageSelector
             title="Display Image"
             description="File types supported: JPG and PNG. Max size: 40 MB"
             onChange={imagePickerHandler}
           />
-          <div className={classes.formcontrol}>
+          <div className="formcontrol">
             <label htmlFor="name">Title</label>
             <input
               type="text"
@@ -40,7 +39,7 @@ const SubmitSnap = () => {
               placeholder="Snap Name"
             />
           </div>
-          <div className={classes.formcontrol}>
+          <div className="formcontrol">
             <label htmlFor="name">Description</label>
             <input
               type="text"
@@ -51,7 +50,7 @@ const SubmitSnap = () => {
               placeholder="Description"
             />
           </div>
-          <div className={classes.formcontrol}>
+          <div className="formcontrol">
             <label htmlFor="name">Tags</label>
             <input
               type="text"
@@ -62,7 +61,7 @@ const SubmitSnap = () => {
               placeholder="Tags"
             />
           </div>
-          <div className={classes.formcontrol}>
+          <div className="formcontrol">
             <label htmlFor="name">Time Date</label>
             <input
               type="text"
@@ -73,7 +72,7 @@ const SubmitSnap = () => {
               placeholder="Enter the date when the picture was taken"
             />
           </div>
-          <div className={classes.formcontrol}>
+          <div className="formcontrol">
             <label htmlFor="name">Location</label>
             <input
               type="text"

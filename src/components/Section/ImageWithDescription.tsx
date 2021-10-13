@@ -1,21 +1,20 @@
 import React from "react"
 import "./ImageWithDescription.css"
 import Title from "decentraland-gatsby/dist/components/Text/Title"
-import SubTitle from "decentraland-gatsby/dist/components/Text/SubTitle"
 import Paragraph from "decentraland-gatsby/dist/components/Text/Paragraph"
 import { Button } from "decentraland-ui/dist/components/Button/Button"
 
-export default function ImageWithDescription(props) {
+export default function ImageWithDescription(props: any) {
   return (
-    <div class="Container">
-      <div class="grid">
-        <div class="row">
+    <div className="Container">
+      <div className="grid">
+        <div className="row">
           {props.imageLocation == "left" ? (
             <div className="Container-Background">
-              <div class="image">
+              <div className="image">
                 <img src={props.image} width="340" height="300" />
               </div>
-              <div class="text">
+              <div className="text">
                 <Title>{props.title}</Title>
                 <Paragraph>{props.desc}</Paragraph>
                 {props.hasButton == "yes" ? (
@@ -27,7 +26,7 @@ export default function ImageWithDescription(props) {
             </div>
           ) : (
             <div className="Container-Background">
-              <div class="text">
+              <div className="text">
                 <Title>{props.title}</Title>
                 <Paragraph>{props.desc}</Paragraph>
                 {props.hasButton == "yes" ? (
@@ -36,7 +35,7 @@ export default function ImageWithDescription(props) {
                   ""
                 )}
               </div>
-              <div class="image">
+              <div className="image">
                 <img src={props.image} width="300" height="300" />
               </div>
             </div>
