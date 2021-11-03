@@ -1,4 +1,5 @@
 import React from "react"
+import { Link } from "gatsby"
 import "./ImageWithDescription.css"
 import Title from "decentraland-gatsby/dist/components/Text/Title"
 import Paragraph from "decentraland-gatsby/dist/components/Text/Paragraph"
@@ -11,14 +12,16 @@ export default function ImageWithDescription(props: any) {
         <div className="row">
           {props.imageLocation == "left" ? (
             <div className="Container-Background">
-              <div className="image">
+              <div>
                 <img src={props.image} width="340" height="300" />
               </div>
               <div className="text">
                 <Title>{props.title}</Title>
                 <Paragraph>{props.desc}</Paragraph>
                 {props.hasButton == "yes" ? (
-                  <Button primary>{props.buttonText}</Button>
+                  <Link to={props.link}>
+                    <Button primary>{props.buttonText}</Button>
+                  </Link>
                 ) : (
                   ""
                 )}
@@ -30,12 +33,14 @@ export default function ImageWithDescription(props: any) {
                 <Title>{props.title}</Title>
                 <Paragraph>{props.desc}</Paragraph>
                 {props.hasButton == "yes" ? (
-                  <Button primary>{props.buttonText}</Button>
+                  <Link to={props.link}>
+                    <Button primary>{props.buttonText}</Button>
+                  </Link>
                 ) : (
                   ""
                 )}
               </div>
-              <div className="image">
+              <div>
                 <img src={props.image} width="300" height="300" />
               </div>
             </div>
