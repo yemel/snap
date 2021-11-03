@@ -1,29 +1,53 @@
-import React, { useState, useReducer } from "react"
-import useFormatMessage from "decentraland-gatsby/dist/hooks/useFormatMessage"
-// import classes from "./curation.css"
+import React from "react"
+//CSS
 import "./curation.css"
+//Libs
 import Title from "decentraland-gatsby/dist/components/Text/Title"
 import Paragraph from "decentraland-gatsby/dist/components/Text/Paragraph"
-import Snaps from "../components/Snaps/snaps"
-import { AnyAaaaRecord } from "dns"
+import SnapCard from "../components/Snaps/snapCard"
+import { Button } from "decentraland-ui/dist/components/Button/Button"
 
 const Curation = () => {
-  const l = useFormatMessage()
-  // Image Picker
-  const [imagePickerState, SetImagePickerState] = useState()
-  const imagePickerHandler = (image: any) => {
-    SetImagePickerState(image)
-  }
-  // END Image Picker
+  const DUMMY_SNAP = [
+    {
+      id: 1,
+      name: "TestName",
+      desc: "TestDesc",
+      tags: ["casino", "nature"],
+      location: "(X,Y)",
+      time: "ab/cd/efgh",
+    },
+  ]
 
   return (
     <>
       <div className="Header">
-        <Title>Every opinion matters</Title>
-        <Paragraph>Help shape the Snap community</Paragraph>
+        <Title style={{ color: "white" }}>Every opinion matters</Title>
+        <Paragraph style={{ color: "white" }}>
+          Score the following Snaps and help shape the community
+        </Paragraph>
       </div>
       <div className="MainDiv">
-        <Snaps />
+        <div className="MainContainer">
+          {DUMMY_SNAP.map((e) => (
+            <SnapCard
+              key={e.id}
+              name={e.name}
+              desc={e.desc}
+              tags={e.tags}
+              location={e.location}
+              time={e.time}
+            />
+          ))}
+        </div>
+        <div className="buttonsWrapper">
+          <Button size="huge" secondary>
+            Back
+          </Button>
+          <Button size="huge" primary>
+            Next
+          </Button>
+        </div>
       </div>
     </>
   )
