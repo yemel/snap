@@ -18,8 +18,8 @@ const SubmitSnap = () => {
   return (
     <>
       <div className="Header">
-        <Title>Upload your best Snap</Title>
-        <Paragraph>only ONE per day</Paragraph>
+        <Title style={{ color: "white" }}>Upload your best Snap</Title>
+        <Paragraph style={{ color: "white" }}>only ONE per day</Paragraph>
       </div>
       <div className="MainDiv">
         <div className="AllItems">
