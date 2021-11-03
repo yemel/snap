@@ -1,0 +1,186 @@
+.EventCardPrincipal {
+  margin: 8px;
+  border-radius: 0.5rem;
+  border: #e3dede 1px solid;
+  padding: 2rem;
+}
+.EventCardPrincipal:hover {
+  cursor: pointer;
+  box-shadow: rgba(4, 17, 29, 0.35) 0px 0px 9px 0px;
+  background-color: transparent;
+  transition: ease 300ms;
+}
+.EventCardArticle {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(229, 232, 235);
+  border-radius: 5px;
+  position: relative;
+  width: 288px;
+}
+
+.EventCardA {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: initial;
+}
+
+.EventCardImageWrapper {
+  height: 286px;
+  border-radius: 5px;
+  padding: 0px 8px;
+  position: relative;
+}
+
+.EventCardImageWrapper2 {
+  min-height: inherit;
+  border-radius: inherit;
+  height: 100%;
+  width: 100%;
+}
+
+.EventCardImageWrapper3 {
+  height: 100%;
+  min-height: inherit;
+  width: 100%;
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.EventCardImage {
+  object-fit: contain;
+  width: auto;
+  height: auto;
+  border-radius: 5px;
+  max-width: 100%;
+  max-height: 100%;
+  opacity: 1;
+}
+
+.EventCardImageWrapper4 {
+  height: 100%;
+  width: 286px;
+  border-radius: inherit;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  position: relative;
+  border-radius: 5px;
+}
+
+.EventCardDescriptionWrapper {
+  padding: 12px;
+  justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+}
+
+.EventCardDescriptionPart1 {
+  justify-content: space-between;
+  display: flex;
+}
+
+.EventCardDescriptionPart2 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  margin-top: 12px;
+}
+
+.EventCardDescriptionPart1Div1 {
+  min-width: 0px;
+  flex: 2 0 0%;
+}
+
+.EventCardDescriptionPart1Div2 {
+  flex: 1 0 0%;
+  max-width: 50%;
+  align-items: flex-end;
+  flex-direction: column;
+  display: flex;
+}
+
+.image {
+  height: 14px;
+  width: 14px;
+  overflow: hidden;
+  margin-left: 10px;
+}
+
+.EventCardDescriptionPart1Div1Sub1 {
+  display: flex;
+  color: rgb(112, 122, 131);
+  font-size: 12px;
+}
+
+.EventCardDescriptionPart1Div1Sub2 {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0.1px;
+  color: rgb(53, 56, 64);
+  font-weight: 500;
+}
+
+.EventCardDescriptionPrice {
+  color: rgb(112, 122, 131);
+  text-align: right;
+  font-size: 11px;
+}
+
+.EventCardDescriptionPriceNumberWrapper {
+  font-size: 14px;
+  height: initial;
+  justify-content: flex-end;
+  align-items: center;
+  display: flex;
+  font-weight: 600;
+  color: rgb(53, 56, 64);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.EventCardDescriptionPriceIcon {
+  cursor: default;
+}
+
+.EventCardDescriptionPriceNumber {
+  margin-left: 0.3em;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.EventCardDescriptionPriceIconDiv {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+}
+
+.EventCardDescriptionPriceIconImg {
+  object-fit: contain;
+  width: 14px;
+  height: 14px;
+  border: 0;
+}
+
+.score {
+  display: flex;
+  justify-content: center;
+}
