@@ -60,9 +60,20 @@ export type SnapshotProposalPayload = {
   snapshot: number
 }
 
+export type SnapshotRemoveSnapMessage = SnapshotMessage<"delete-proposal", { snapProposal: string }>
+
 export type SnapshotRemoveProposalMessage = SnapshotMessage<"delete-proposal", { proposal: string }>
 export type SnapshotProposalMessage = SnapshotMessage<"proposal", SnapshotProposalPayload>
 export type SnapshotNewProposalPayload = {
+  name: string,
+  body: string,
+  end: Pick<Date, 'getTime'>,
+  start: Pick<Date, 'getTime'>,
+  snapshot: number,
+  choices: string[]
+}
+
+export type SnapshotNewSnapPayload = {
   name: string,
   body: string,
   end: Pick<Date, 'getTime'>,
@@ -155,6 +166,44 @@ export class Snapshot extends API {
   // async getProposals(space: string) {
   //   return this.fetch<Record<string, SnapshotProposal>>(`/api/${space}/proposals`)
   // }
+
+  async createSnapMessage(
+    space: string,
+    version: string,
+    network: string,
+    strategies: SnapshotStrategy[],
+    payload: SnapshotNewSnapPayload
+  ) {
+    const msg = {
+      version,
+      space,
+      type: "proposal",
+      timestamp: Time.from().getTime().toString().slice(0, -3),
+      payload: {
+        ...payload,
+        start: Number(payload.start.getTime().toString().slice(0, -3)),
+        end: Number(payload.end.getTime().toString().slice(0, -3)),
+        metadata: { network, strategies }
+      }
+    }
+
+    return JSON.stringify(msg)
+  }
+
+  async removeSnapProposalMessage(space: string, snapProposal: string) {
+    const status = await this.getStatus()
+
+    const msg: SnapshotRemoveSnapMessage = {
+      space,
+      type: "delete-proposal",
+      version: status.version,
+      timestamp: Time.from().getTime().toString().slice(0, -3),
+      payload: { snapProposal }
+    }
+
+    return JSON.stringify(msg)
+  }
+
 
   async createProposalMessage(
     space: string,
