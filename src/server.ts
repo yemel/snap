@@ -11,6 +11,7 @@ import metrics from 'decentraland-gatsby/dist/entities/Prometheus/routes'
 import handle from 'decentraland-gatsby/dist/entities/Route/handle'
 import RequestError from 'decentraland-gatsby/dist/entities/Route/error'
 import proposal from './entities/Proposal/routes'
+import snap from './entities/Snap/routes'
 import score from './entities/Votes/routes'
 import subscription from './entities/Subscription/routes'
 import committee from './entities/Committee/routes'
@@ -34,6 +35,7 @@ app.use('/api', [
   proposal,
   score,
   subscription,
+  snap,
   handle(async () => {
     throw new RequestError('NotFound', RequestError.NotFound)
   })
