@@ -85,8 +85,6 @@ export async function createSnap(req: WithAuth) {
   const configuration = req.body
   const taken_at = new Date(configuration.taken_at)
 
-  console.log("test")
-
   const id = uuid()
   const address = SNAPSHOT_ADDRESS
   const start = Time.utc().set('seconds', 0)

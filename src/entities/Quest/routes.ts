@@ -2,6 +2,7 @@ import { Request } from 'express'
 import routes from "decentraland-gatsby/dist/entities/Route/routes";
 import { auth, WithAuth } from "decentraland-gatsby/dist/entities/Auth/middleware";
 import handleAPI, { handleJSON } from 'decentraland-gatsby/dist/entities/Route/handle';
+import { v1 as uuid } from 'uuid'
 import {
   QuestAttributes,
   QuestStatus
@@ -21,6 +22,7 @@ export default routes((route) => {
   const withOptionalAuth = auth({ optional: true })
   route.get("/quests", withOptionalAuth, handleJSON(getQuests))
   route.get("/quests/:proposal", handleAPI(getQuest))
+  route.post("/quests", withAuth, handleAPI(createQuest))
 })
 
 function formatError(err: Error) {
@@ -80,4 +82,43 @@ export async function getQuest(req: Request<{ quest: string }>) {
   }
 
   return QuestModel.parse(quest)
+}
+
+
+export async function createQuest(req: WithAuth) {
+  const user = req.auth!
+  const configuration = req.body
+  
+  const id = uuid()
+  const start_at = new Date(configuration.start_at)
+  const finish_at = new Date(configuration.finish_at)
+
+  //
+  // Create quest in DB
+  //
+  const newQuest: QuestAttributes = {
+    id,
+    category: configuration.category,
+    status: QuestStatus.Active,
+    title: configuration.title,
+    description: configuration.description,
+    configuration: JSON.stringify({
+      location: configuration.location
+    }),
+    start_at: start_at,
+    finish_at: finish_at,
+  }
+
+  try {
+    await QuestModel.create(newQuest)
+  } catch (err) {
+    throw err
+  }
+
+  console.log("New Quest is: ", QuestModel.parse(newQuest))
+
+  return QuestModel.parse(newQuest)
+
+
+
 }

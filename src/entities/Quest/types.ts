@@ -1,3 +1,4 @@
+import { AnyCnameRecord } from "dns"
 
 export type QuestAttributes<C extends {} = any> = {
   id: string
@@ -25,9 +26,9 @@ export type NewQuest = {
   category: QuestCategory
   title: string
   description: string
-  taken_at: string
-  x: number
-  y: number
+  configuration: any
+  start_at: Date
+  finish_at: Date
 }
 
 export function isQuestCategory(value:  string | null | undefined): boolean {
