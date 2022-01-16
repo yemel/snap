@@ -122,7 +122,7 @@ export default class ProposalModel extends Model<ProposalAttributes> {
       WHERE "deleted" = FALSE
       ${conditional(!!filter.user, SQL`AND p."user" = ${filter.user}`)}
       ${conditional(!!filter.type, SQL`AND p."type" = ${filter.type}`)}
-      ${conditional(!!filter.status, SQL`AND p."status" = ${filter.status}`)}
+      AND "status" = "${filter.status}"
       ${conditional(!!filter.subscribed, SQL`AND s."user" = ${filter.subscribed}`)}
     `)
 
