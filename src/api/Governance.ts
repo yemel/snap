@@ -4,6 +4,7 @@ import Time from "decentraland-gatsby/dist/utils/date/Time";
 import env from "decentraland-gatsby/dist/utils/env";
 import { NewProposalBanName, NewProposalCatalyst, NewProposalPOI, NewProposalPoll, NewProposalGrant, ProposalAttributes, ProposalType, ProposalStatus } from "../entities/Proposal/types";
 import { NewSnap, SnapAttributes } from "../entities/Snap/types";
+import { NewQuest, QuestAttributes } from "../entities/Quest/types";
 import { SubscriptionAttributes } from "../entities/Subscription/types";
 import { Vote } from "../entities/Votes/types";
 
@@ -93,6 +94,19 @@ export class Governance extends API {
 
     return newSnap.data
   }
+
+  async createQuest(quest: NewQuest) {
+    const newQuest = await this.fetch<ApiResponse<QuestAttributes>>(
+      `/quests`,
+      this.options()
+        .method('POST')
+        .authorization()
+        .json(quest)
+    )
+
+    return newQuest.data
+  }
+
 
   async createProposal<P extends keyof NewProposalMap>(path: P, proposal: NewProposalMap[P]) {
     const newProposal = await this.fetch<ApiResponse<ProposalAttributes>>(
