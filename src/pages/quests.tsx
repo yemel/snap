@@ -11,6 +11,9 @@ import Title from "decentraland-gatsby/dist/components/Text/Title"
 import { Card } from "decentraland-ui/dist/components/Card/Card"
 import { Link } from "gatsby-plugin-intl"
 import Paragraph from "decentraland-gatsby/dist/components/Text/Paragraph"
+import StatusLabel from '../components/Status/StatusLabel'
+import CategoryLabel from '../components/Category/CategoryLabel'
+import FinishLabel from '../components/Status/FinishLabel'
 
 import locations, {
   ProposalListView,
@@ -126,6 +129,13 @@ export default function IndexPage() {
                       >
                         <Card.Content>
                           <Header>{quest.title}</Header>
+                          <div style={{display:"flex"}}>
+                            <StatusLabel status={quest.status} />
+                            {/* Esto deberia ir cuando se creen mas de una categoria =) */}
+                            {/* <CategoryLabel  type={quest.category} /> */}
+                            <CategoryLabel  type={"poi"} />
+                            <FinishLabel date={quest.finish_at} />
+                          </div>
                         </Card.Content>
                       </Card>
                     )
