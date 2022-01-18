@@ -73,7 +73,6 @@ export async function getQuest(req: Request<{ quest: string }>) {
 
   const id = req.params.quest
 
-  console.log("id: ", id)
   if (!isUUID(id || "")) {
     throw new RequestError(`Quest not found: "${id}"`, RequestError.NotFound)
   }

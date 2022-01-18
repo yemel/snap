@@ -11,26 +11,6 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
       primaryKey: true,
       notNull: true
     },
-    snapshot_id: {
-      type: 'TEXT',
-      notNull: true
-    },
-    snapshot_space: {
-      type: 'TEXT',
-      notNull: true
-    },
-    snapshot_snap_proposal: {
-      type: 'TEXT',
-      notNull: true
-    },
-    snapshot_signature: {
-      type: 'TEXT',
-      notNull: true
-    },
-    snapshot_network: {
-      type: 'TEXT',
-      notNull: true
-    },
     user: {
       type: 'TEXT',
       notNull: true
@@ -55,27 +35,22 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
       type: 'TEXT',
       notNull: false,
     },
-    start_at: {
-      type: 'TIMESTAMPTZ',
-      default: 'now()',
-      notNull: true
-    },
-    finish_at: {
-      type: 'TIMESTAMPTZ',
-      notNull: true
-    },
     taken_at: {
       type: 'TIMESTAMPTZ',
-      notNull: true
+      notNull: true,
     },
     taken_location_x: {
       type: 'INTEGER',
-      notNull: true
+      notNull: true,
     },
     taken_location_y: {
       type: 'INTEGER',
-      notNull: true
-    }
+      notNull: true,
+    },
+    quest_id: {
+      type: 'TEXT',
+      notNull: true,
+    },
   })
 }
 

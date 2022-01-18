@@ -78,8 +78,6 @@ const SubmitQuest = () => {
     //     console.log(error);
     //   });
 
-    // ACA ES DONDE VA LA EJECUCION QUE SE HACE CON TODA ESTA DATA
-
     let questResult = await Governance.get()
         .createQuest({
             category: category,

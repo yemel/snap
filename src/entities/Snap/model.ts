@@ -25,8 +25,7 @@ export default class SnapModel extends Model<SnapAttributes> {
   static parse(snap: SnapAttributes): SnapAttributes {
     return {
       ...snap,
-      configuration: JSON.parse(snap.configuration),
-      snapshot_snap_proposal: JSON.parse(snap.snapshot_snap_proposal)
+      configuration: JSON.parse(snap.configuration)
     }
   }
   

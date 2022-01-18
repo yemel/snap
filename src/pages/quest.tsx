@@ -39,11 +39,13 @@ const QuestPage = () => {
             {/* {quest?.finish_at} */}
           </Paragraph>
         </div>
-        <Link to={`/submitSnap/`}>
-          <Button size="huge" primary>
-            Submit Snap
-          </Button>
-        </Link>
+        { quest && 
+        <Link to={`/submitSnap/?quest_id=${quest.id}`}>
+        <Button size="huge" primary>
+          Submit Snap
+        </Button>
+      </Link>}
+        
       </div>
     </>
   )

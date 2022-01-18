@@ -1,22 +1,16 @@
 
 export type SnapAttributes<C extends {} = any> = {
   id: string
-  snapshot_id: string
-  snapshot_space: string
-  snapshot_snap_proposal: string
-  snapshot_signature: string
-  snapshot_network: string
   user: string
   category: SnapCategory
   status: SnapStatus
   title: string
   description: string
   configuration: C
-  start_at: Date
-  finish_at: Date
   taken_at: Date
   taken_location_x: number
   taken_location_y: number
+  quest_id: string
 }
 
 export enum SnapStatus {
@@ -38,4 +32,5 @@ export type NewSnap = {
   taken_at: string
   x: number
   y: number
+  quest_id: string
 }
