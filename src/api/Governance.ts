@@ -123,7 +123,7 @@ export class Governance extends API {
   }
 
   async getQuest(questId: string) {
-    const result = await this.fetch<ApiResponse<QuestAttributes>>(`/quest/${proposalId}`)
+    const result = await this.fetch<ApiResponse<QuestAttributes>>(`/quests/${questId}`)
     return result.data ? Governance.parseQuest(result.data) : null
   }
 

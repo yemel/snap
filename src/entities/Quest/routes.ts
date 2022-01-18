@@ -21,7 +21,7 @@ export default routes((route) => {
   const withAuth = auth()
   const withOptionalAuth = auth({ optional: true })
   route.get("/quests", withOptionalAuth, handleJSON(getQuests))
-  route.get("/quests/:proposal", handleAPI(getQuest))
+  route.get("/quests/:quest", handleAPI(getQuest))
   route.post("/quests", withAuth, handleAPI(createQuest))
 })
 
@@ -70,7 +70,10 @@ export async function getQuests(req: WithAuth<Request>) {
 
 
 export async function getQuest(req: Request<{ quest: string }>) {
+
   const id = req.params.quest
+
+  console.log("id: ", id)
   if (!isUUID(id || "")) {
     throw new RequestError(`Quest not found: "${id}"`, RequestError.NotFound)
   }

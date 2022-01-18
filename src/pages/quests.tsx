@@ -121,7 +121,7 @@ export default function IndexPage() {
                     return (
                       <Card
                         as={Link}
-                        to={`/quest/${quest.id}`}
+                        to={`/quest?id=${quest.id}`}
                         style={{ width: "100%" }}
                       >
                         <Card.Content>
