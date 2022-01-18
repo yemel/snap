@@ -4,7 +4,7 @@ import Time from "decentraland-gatsby/dist/utils/date/Time";
 import env from "decentraland-gatsby/dist/utils/env";
 import { NewProposalBanName, NewProposalCatalyst, NewProposalPOI, NewProposalPoll, NewProposalGrant, ProposalAttributes, ProposalType, ProposalStatus } from "../entities/Proposal/types";
 import { NewSnap, SnapAttributes } from "../entities/Snap/types";
-import { NewQuest, QuestAttributes } from "../entities/Quest/types";
+import { NewQuest, QuestAttributes, QuestCategory, QuestStatus } from "../entities/Quest/types";
 import { SubscriptionAttributes } from "../entities/Subscription/types";
 import { Vote } from "../entities/Votes/types";
 
@@ -21,6 +21,13 @@ export type GetProposalsFilter = {
   type: ProposalType,
   status: ProposalStatus,
   subscribed: boolean | string,
+  limit: number,
+  offset: number
+}
+
+export type GetQuestsFilter = {
+  category: QuestCategory,
+  status: QuestStatus,
   limit: number,
   offset: number
 }
@@ -56,6 +63,14 @@ export class Governance extends API {
       finish_at: Time.date(proposal.finish_at),
       updated_at: Time.date(proposal.updated_at),
       created_at: Time.date(proposal.created_at),
+    }
+  }
+
+  static parseQuest(quest: QuestAttributes): QuestAttributes {
+    return {
+      ...quest,
+      start_at: Time.date(quest.start_at),
+      finish_at: Time.date(quest.finish_at),
     }
   }
 
@@ -105,6 +120,27 @@ export class Governance extends API {
     )
 
     return newQuest.data
+  }
+
+  async getQuest(questId: string) {
+    const result = await this.fetch<ApiResponse<QuestAttributes>>(`/quest/${proposalId}`)
+    return result.data ? Governance.parseQuest(result.data) : null
+  }
+
+  async getQuests(filters: Partial<GetQuestsFilter> = {}) {
+    const params = new URLSearchParams(filters as any)
+    let query = params.toString()
+    if (query) {
+      query = '?' + query
+    }
+
+    let options = this.options().method('GET')
+
+    const quests = await this.fetch<ApiResponse<QuestAttributes[]> & { total: number }>(`/quests${query}`, options)
+    return {
+      ...quests,
+      data: quests.data.map(quest => Governance.parseQuest(quest))
+    }
   }
 
 
