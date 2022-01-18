@@ -26,12 +26,16 @@ import {
   toProposalStatus,
   toProposalType,
 } from "../entities/Proposal/types"
+import {
+  toQuestCategory,
+} from "../entities/Quest/types"
 import useFormatMessage from "decentraland-gatsby/dist/hooks/useFormatMessage"
 import useSubscriptions from "../hooks/useSubscriptions"
 import Empty from "../components/Proposal/Empty"
 import Head from "decentraland-gatsby/dist/components/Head/Head"
-import useProposals from "../hooks/useProposals"
+import useQuests from "../hooks/useQuests"
 import "./index.css"
+import { QuestStatus } from "../entities/Quest/types"
 
 const ITEMS_PER_PAGE = 25
 
@@ -47,29 +51,21 @@ export default function IndexPage() {
   const params = useMemo(() => new URLSearchParams(location.search), [
     location.search,
   ])
+  const category = toQuestCategory(params.get("category")) ?? undefined
   const view = toProposalListView(params.get("view")) ?? undefined
+  const status = QuestStatus.Active
   const page = toProposalListPage(params.get("page")) ?? undefined
 
-  const proposals = {
-    total: 2,
-    data: [
-      { title: "QUEST 1", id: 1 },
-      { title: "QUEST 2", id: 2 },
-      { title: "QUEST 3", id: 3 },
-      { title: "QUEST 4", id: 4 },
-      { title: "QUEST 5", id: 5 },
-      { title: "QUEST 6", id: 6 },
-    ],
-  }
+  const [ quests, questsState ] = useQuests({ category, status, page, itemsPerPage: ITEMS_PER_PAGE })
 
   useEffect(() => {
-    if (typeof proposals?.total === "number") {
-      const maxPage = Math.ceil(proposals.total / ITEMS_PER_PAGE)
+    if (typeof quests?.total === "number") {
+      const maxPage = Math.ceil(quests.total / ITEMS_PER_PAGE)
       if (page > maxPage) {
         handlePageFilter(maxPage)
       }
     }
-  }, [page, proposals])
+  }, [page, quests])
 
   function handlePageFilter(page: number) {
     const newParams = new URLSearchParams(params)
@@ -106,40 +102,40 @@ export default function IndexPage() {
               <ActionableLayout
                 leftAction={
                   <Header sub>
-                    {!proposals && ""}
-                    {proposals &&
-                      l(`general.count_proposals`, {
-                        count: proposals.total || 0,
+                    {!quests && ""}
+                    {quests &&
+                      l(`general.count_quests`, {
+                        count: quests.total || 0,
                       })}
                   </Header>
                 }
               >
                 {/* <Loader active={!proposals || proposalsState.loading} /> */}
-                {proposals && proposals.data.length === 0 && (
+                {quests && quests.data.length === 0 && (
                   <Empty
                     description={l(`page.proposal_list.no_proposals_yet`)}
                   />
                 )}
-                {proposals &&
-                  proposals.data.map((proposal) => {
+                {quests &&
+                  quests.data.map((quest) => {
                     return (
                       <Card
                         as={Link}
-                        to={`/quest/${proposal.id}`}
+                        to={`/quest/${quest.id}`}
                         style={{ width: "100%" }}
                       >
                         <Card.Content>
-                          <Header>{proposal.title}</Header>
+                          <Header>{quest.title}</Header>
                         </Card.Content>
                       </Card>
                     )
                   })}
-                {proposals && proposals.total > ITEMS_PER_PAGE && (
+                {quests && quests.total > ITEMS_PER_PAGE && (
                   <Pagination
                     onPageChange={(e, { activePage }) =>
                       handlePageFilter(activePage as number)
                     }
-                    totalPages={Math.ceil(proposals.total / ITEMS_PER_PAGE)}
+                    totalPages={Math.ceil(quests.total / ITEMS_PER_PAGE)}
                     activePage={page}
                     firstItem={null}
                     lastItem={null}

@@ -51,3 +51,9 @@ export function isQuestStatus(value:  string | null | undefined): boolean {
       return false
   }
 }
+
+export function toQuestCategory(value: string | null | undefined): QuestCategory | null {
+  return isQuestCategory(value)?
+    value as QuestCategory :
+    null
+}

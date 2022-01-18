@@ -54,12 +54,13 @@ export async function getQuests(req: WithAuth<Request>) {
       ? Number(req.query.limit)
       : MAX_QUEST_LIMIT
 
+  console.log("about to query quests...")
   const [total, data] = await Promise.all([
     QuestModel.getQuestsTotal({ category, status }),
     QuestModel.getQuestsList({
       category,
       status,
-      offset,
+      offset, 
       limit,
     }),
   ])

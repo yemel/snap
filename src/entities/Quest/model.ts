@@ -40,6 +40,7 @@ export default class QuestModel extends Model<QuestAttributes> {
     const result = await this.query(SQL`
       SELECT COUNT(*) as "total"
       FROM ${table(QuestModel)} p
+      WHERE 1=1
       ${conditional(!!filter.category, SQL`AND p."category" = ${filter.category}`)}
       ${conditional(!!filter.status, SQL`AND p."status" = ${filter.status}`)}
     `)
@@ -60,9 +61,10 @@ export default class QuestModel extends Model<QuestAttributes> {
     const quests = await this.query(SQL`
       SELECT p.*
       FROM ${table(QuestModel)} p
+      WHERE 1=1
       ${conditional(!!filter.category, SQL`AND "category" = ${filter.category}`)}
       ${conditional(!!filter.status, SQL`AND "status" = ${filter.status}`)}
-      ORDER BY "created_at" DESC
+      ORDER BY "start_at" DESC
       ${limit(filter.limit, { min: 0, max: 100, defaultValue: 100 })}
       ${offset(filter.offset)}
     `)
