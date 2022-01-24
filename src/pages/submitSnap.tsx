@@ -1,4 +1,5 @@
-import React, { useState, useReducer } from "react"
+import React, { useState, useMemo } from "react"
+import { useLocation } from '@reach/router'
 import useFormatMessage from "decentraland-gatsby/dist/hooks/useFormatMessage"
 import ImageSelector from "../components/UI/ImageSelector"
 import "./submitSnap.css"
@@ -6,10 +7,15 @@ import { Button } from "decentraland-ui/dist/components/Button/Button"
 import Title from "decentraland-gatsby/dist/components/Text/Title"
 import Paragraph from "decentraland-gatsby/dist/components/Text/Paragraph"
 import { v4 as uuidv4 } from "uuid"
+import { SnapCategory } from '../entities/Snap/types'
+import { Governance } from "../api/Governance"
 import axios from "axios"
 
 const SubmitSnap = () => {
+  const locationHook = useLocation()
   const l = useFormatMessage()
+  const params = useMemo(() => new URLSearchParams(locationHook.search), [locationHook.search])
+  
   // Image Picker
   const [imagePickerState, SetImagePickerState] = useState()
   const imagePickerHandler = (image: any) => {
@@ -21,8 +27,9 @@ const SubmitSnap = () => {
   const formSubmitHandler = async (e: any) => {
     e.preventDefault()
     var IMAGE_ID = uuidv4()
+    
+    const quest_id = params.get('quest_id') || ""
 
-    console.log("SUBMITTING THE FKNG FORM")
     console.log(snapName)
     console.log(snapDescription)
     console.log(tags)
@@ -80,6 +87,19 @@ const SubmitSnap = () => {
 
     // ACA ES DONDE VA LA EJECUCION QUE SE HACE CON TODA ESTA DATA
 
+    let questResult = await Governance.get()
+        .createSnap({
+            category: SnapCategory.IgPhoto,
+            title: snapName,
+            description: snapDescription,
+            taken_at: timeDate,
+            x: 1,
+            y: 1,
+            quest_id
+        });
+
+    console.log(questResult)
+
     SetSnapName("")
     SetSnapDescription("")
     SetTags("")
@@ -102,7 +122,7 @@ const SubmitSnap = () => {
   const setTagsHandler = (event: any) => {
     SetTags(event.target.value)
   }
-  const [timeDate, SetTimeDate] = useState("")
+  const [timeDate, SetTimeDate] = useState(new Date())
   const setTimeDateHandler = (event: any) => {
     SetTimeDate(event.target.value)
   }
