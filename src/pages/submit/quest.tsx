@@ -23,21 +23,14 @@ const SubmitQuest = () => {
   // Form Submit Handler
   const formSubmitHandler = async (e: any) => {
     e.preventDefault()
-    var IMAGE_ID = uuidv4()
+    var image_id = uuidv4()
 
-    console.log("SUBMITTING THE FKNG FORM")
-    console.log(questTitle)
-    console.log(questDescription)
-    console.log(location)
-    console.log("This is all the data, now image:")
-    console.log(imagePickerState)
-
-    /*// Call lambda to ask for signed URL to post in S3 Bucket
+    // Call lambda to ask for signed URL to post in S3 Bucket
     let S3URL: any
     await axios
       .post(
         "https://643043nmsk.execute-api.us-east-2.amazonaws.com/prod/s3link",
-        { imageID: IMAGE_ID }
+        { imageID: image_id }
       )
       .then(function (response) {
         console.log("Here is the s3 link:")
@@ -47,8 +40,7 @@ const SubmitQuest = () => {
       .catch(function (error) {
         console.log(error)
       })
-
-     console.log("Now we put the image in S3")
+      
     // Once we now have the signed URL we need to post the IMAGE to the S3 bucket and wait for response
     await axios
       .put(S3URL, imagePickerState)
@@ -57,26 +49,7 @@ const SubmitQuest = () => {
       })
       .catch(function (error) {
         console.log(error)
-      }) */
-
-    // If the image was uploaded correctly we can post to Postgres all the data
-    // If the image upload failed we can tell the user SERVER ERROR "try again"
-
-    // await snapService
-    //   .createSnap({
-    //     imageid: IMAGE_ID,
-    //     name: snapName,
-    //     description: snapDescription,
-    //     tags: tags,
-    //     timeDate: timeDate,
-    //     location: location,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+      })
 
     let questResult = await Governance.get()
         .createQuest({
@@ -85,7 +58,8 @@ const SubmitQuest = () => {
             description: questDescription,
             configuration: {location},
             start_at: timeDateStart,
-            finish_at: timeDateFinish
+            finish_at: timeDateFinish,
+            image_id
         });
 
     console.log(questResult)
@@ -181,6 +155,29 @@ const SubmitQuest = () => {
                         <Dropdown.Item text="Point of interest" value={QuestCategory.PointOfInterest} onClick={(e) => setCategoryHandler(QuestCategory.PointOfInterest)} />
                     </Dropdown.Menu>
                 </Dropdown>
+            </div>
+            <div className="formcontrol">
+              {imagePickerState ? (
+              <div className="ImagePreview">
+                <img
+                  className="Image"
+                  src={URL.createObjectURL(imagePickerState)}
+                />
+                <button
+                  onClick={() => {
+                    SetImagePickerState(undefined)
+                  }}
+                >
+                  Remove
+                </button>
+              </div>
+            ) : (
+              <ImageSelector
+                title="Display Image"
+                description="File types supported: JPG and PNG. Max size: 40 MB"
+                onChange={imagePickerHandler}
+              />
+            )}
             </div>
             <div className="formcontrol">
               <label htmlFor="name">Location</label>

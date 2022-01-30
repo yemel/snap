@@ -47,6 +47,10 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
       type: 'INTEGER',
       notNull: true,
     },
+    image_id: {
+      type: 'TEXT',
+      notNull: false,
+    },
     quest_id: {
       type: 'TEXT',
       notNull: true,

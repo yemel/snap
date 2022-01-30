@@ -23,6 +23,7 @@ import {
   snapUrl
 } from './utils';
 import { IPFS, HashContent } from '../../api/IPFS';
+import isUUID from 'validator/lib/isUUID';
 import VotesModel from '../Votes/model'
 import Catalyst, { Avatar } from 'decentraland-gatsby/dist/utils/api/Catalyst';
 
@@ -70,6 +71,11 @@ export async function createSnap(req: WithAuth) {
     throw new RequestError(`Quest not found: "${quest_id}"`, RequestError.NotFound)
   }
 
+  const image_id = configuration.image_id
+  if(!isUUID(image_id)) {
+    throw new RequestError(`Invalid image id."`, RequestError.NotFound)
+  }
+
   //
   // Create snap in DB
   //
@@ -84,6 +90,7 @@ export async function createSnap(req: WithAuth) {
     configuration: JSON.stringify({}),
     taken_location_x: configuration.x,
     taken_location_y: configuration.y,
+    image_id: configuration.image_id,
     quest_id
   }
 

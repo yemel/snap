@@ -96,6 +96,11 @@ export async function createQuest(req: WithAuth) {
   const start_at = new Date(configuration.start_at)
   const finish_at = new Date(configuration.finish_at)
 
+  const image_id = configuration.image_id
+  if(!isUUID(image_id)) {
+    throw new RequestError(`Invalid image id."`, RequestError.NotFound)
+  }
+
   //
   // Create quest in DB
   //
@@ -110,6 +115,7 @@ export async function createQuest(req: WithAuth) {
     }),
     start_at: start_at,
     finish_at: finish_at,
+    image_id: configuration.image_id
   }
 
   try {
@@ -121,7 +127,5 @@ export async function createQuest(req: WithAuth) {
   console.log("New Quest is: ", QuestModel.parse(newQuest))
 
   return QuestModel.parse(newQuest)
-
-
 
 }

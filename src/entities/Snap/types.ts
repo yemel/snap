@@ -11,6 +11,7 @@ export type SnapAttributes<C extends {} = any> = {
   taken_location_x: number
   taken_location_y: number
   quest_id: string
+  image_id: string
 }
 
 export enum SnapStatus {
@@ -33,4 +34,5 @@ export type NewSnap = {
   x: number
   y: number
   quest_id: string
+  image_id: string
 }

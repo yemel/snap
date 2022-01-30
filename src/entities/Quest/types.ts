@@ -9,6 +9,7 @@ export type QuestAttributes<C extends {} = any> = {
   configuration: C
   start_at: Date
   finish_at: Date
+  image_id: string
 }
 
 export enum QuestStatus {
@@ -29,6 +30,7 @@ export type NewQuest = {
   configuration: any
   start_at: Date
   finish_at: Date
+  image_id: string
 }
 
 export function isQuestCategory(value:  string | null | undefined): boolean {
