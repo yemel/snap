@@ -18,11 +18,11 @@ import subscription from './entities/Subscription/routes'
 import committee from './entities/Committee/routes'
 import social from './entities/Social/routes'
 import sitemap from './entities/Sitemap/routes'
-import { activateProposals, finishProposal } from './entities/Proposal/jobs'
+import { activateQuests, finishQuests } from './entities/Quest/jobs'
 
 const jobs = manager()
-jobs.cron('@eachMinute', activateProposals)
-jobs.cron('@eachMinute', finishProposal)
+jobs.cron('@eachMinute', activateQuests)
+jobs.cron('@eachMinute', finishQuests)
 
 const app = express()
 app.set('x-powered-by', false)

@@ -165,7 +165,7 @@ const SubmitSnap = () => {
             <div className="formcontrol">
               <label htmlFor="name">Time Date</label>
               <input
-                type="text"
+                type="date"
                 id="name"
                 value={timeDate}
                 onChange={setTimeDateHandler}

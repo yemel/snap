@@ -130,7 +130,7 @@ const SubmitQuest = () => {
             <div className="formcontrol">
               <label htmlFor="name">Start Date</label>
               <input
-                type="text"
+                type="date"
                 id="name"
                 value={timeDateStart}
                 onChange={setTimeDateStartHandler}

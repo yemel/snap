@@ -107,13 +107,14 @@ export async function createQuest(req: WithAuth) {
   const newQuest: QuestAttributes = {
     id,
     category: configuration.category,
-    status: QuestStatus.Active,
+    status: QuestStatus.Pending,
     title: configuration.title,
     description: configuration.description,
     configuration: JSON.stringify({
       location: configuration.location
     }),
     start_at: start_at,
+    updated_at: start_at,
     finish_at: finish_at,
     image_id: configuration.image_id
   }
