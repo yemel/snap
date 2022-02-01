@@ -8,11 +8,13 @@ export type QuestAttributes<C extends {} = any> = {
   description: string
   configuration: C
   start_at: Date
+  updated_at: Date
   finish_at: Date
+  image_id: string
 }
 
 export enum QuestStatus {
-  New = 'new',
+  Pending = 'pending',
   Active = 'active',
   Finished = 'finished'
 }
@@ -29,6 +31,7 @@ export type NewQuest = {
   configuration: any
   start_at: Date
   finish_at: Date
+  image_id: string
 }
 
 export function isQuestCategory(value:  string | null | undefined): boolean {
@@ -43,7 +46,7 @@ export function isQuestCategory(value:  string | null | undefined): boolean {
 
 export function isQuestStatus(value:  string | null | undefined): boolean {
   switch (value) {
-    case QuestStatus.New:
+    case QuestStatus.Pending:
     case QuestStatus.Finished:
     case QuestStatus.Active:
       return true

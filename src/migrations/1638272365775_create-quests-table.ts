@@ -39,6 +39,14 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
     finish_at: {
       type: 'TIMESTAMPTZ',
       notNull: true
+    },
+    image_id: {
+      type: 'TEXT',
+      notNull: false,
+    },
+    updated_at: {
+      type: 'TIMESTAMP',
+      notNull: true
     }
   })
 }

@@ -26,25 +26,15 @@ const SubmitSnap = () => {
   // Form Submit Handler
   const formSubmitHandler = async (e: any) => {
     e.preventDefault()
-    var IMAGE_ID = uuidv4()
-    
+    var image_id = uuidv4()
     const quest_id = params.get('quest_id') || ""
-
-    console.log(snapName)
-    console.log(snapDescription)
-    console.log(tags)
-    console.log(timeDate)
-    console.log(location)
-    console.log("This is all the data, now image:")
-    console.log(imagePickerState)
-    console.log("Now begin magic process asking for S3 URL")
 
     // Call lambda to ask for signed URL to post in S3 Bucket
     let S3URL: any
     await axios
       .post(
         "https://643043nmsk.execute-api.us-east-2.amazonaws.com/prod/s3link",
-        { imageID: IMAGE_ID }
+        { imageID: image_id }
       )
       .then(function (response) {
         console.log("Here is the s3 link:")
@@ -54,8 +44,7 @@ const SubmitSnap = () => {
       .catch(function (error) {
         console.log(error)
       })
-
-    console.log("Now we put the image in S3")
+      
     // Once we now have the signed URL we need to post the IMAGE to the S3 bucket and wait for response
     await axios
       .put(S3URL, imagePickerState)
@@ -65,27 +54,7 @@ const SubmitSnap = () => {
       .catch(function (error) {
         console.log(error)
       })
-
-    // If the image was uploaded correctly we can post to Postgres all the data
-    // If the image upload failed we can tell the user SERVER ERROR "try again"
-
-    // await snapService
-    //   .createSnap({
-    //     imageid: IMAGE_ID,
-    //     name: snapName,
-    //     description: snapDescription,
-    //     tags: tags,
-    //     timeDate: timeDate,
-    //     location: location,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
-
-    // ACA ES DONDE VA LA EJECUCION QUE SE HACE CON TODA ESTA DATA
+      
 
     let questResult = await Governance.get()
         .createSnap({
@@ -95,7 +64,8 @@ const SubmitSnap = () => {
             taken_at: timeDate,
             x: 1,
             y: 1,
-            quest_id
+            quest_id,
+            image_id
         });
 
     console.log(questResult)
@@ -195,7 +165,7 @@ const SubmitSnap = () => {
             <div className="formcontrol">
               <label htmlFor="name">Time Date</label>
               <input
-                type="text"
+                type="date"
                 id="name"
                 value={timeDate}
                 onChange={setTimeDateHandler}

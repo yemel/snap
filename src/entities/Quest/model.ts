@@ -71,4 +71,32 @@ export default class QuestModel extends Model<QuestAttributes> {
 
     return quests.map(this.parse)
   }
+
+  static async activateQuests() {
+    const query = SQL`
+      UPDATE ${table(QuestModel)}
+      SET
+        "status" = ${QuestStatus.Active},
+        "updated_at" = now()
+      WHERE
+        "status" = ${QuestStatus.Pending}
+        AND "start_at" <= now()
+    `
+
+    return this.rowCount(query)
+  }
+
+  static async finishQuests() {
+    const query = SQL`
+      UPDATE ${table(QuestModel)}
+      SET
+        "status" = ${QuestStatus.Finished},
+        "updated_at" = now()
+      WHERE
+        "status" = ${QuestStatus.Active}
+        AND "finish_at" <= (now() + interval '1 minute')
+    `
+
+    return this.rowCount(query)
+  }
 }
