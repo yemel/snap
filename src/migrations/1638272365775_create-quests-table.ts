@@ -19,14 +19,6 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
       type: 'TEXT',
       notNull: true
     },
-    title: {
-      type: 'TEXT',
-      notNull: true
-    },
-    description: {
-      type: 'TEXT',
-      notNull: true,
-    },
     configuration: {
       type: 'TEXT',
       notNull: false,
@@ -39,10 +31,6 @@ export async function up(pgm: MigrationBuilder): Promise<void> {
     finish_at: {
       type: 'TIMESTAMPTZ',
       notNull: true
-    },
-    image_id: {
-      type: 'TEXT',
-      notNull: false,
     },
     updated_at: {
       type: 'TIMESTAMP',

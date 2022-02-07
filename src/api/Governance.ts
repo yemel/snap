@@ -6,6 +6,8 @@ import { NewProposalBanName, NewProposalCatalyst, NewProposalPOI, NewProposalPol
 import { NewSnap, SnapAttributes } from "../entities/Snap/types";
 import { NewQuest, QuestAttributes, QuestCategory, QuestStatus } from "../entities/Quest/types";
 import { SubscriptionAttributes } from "../entities/Subscription/types";
+import Catalyst from "decentraland-gatsby/dist/utils/api/Catalyst"
+import Land from 'decentraland-gatsby/dist/utils/api/Land'
 import { Vote } from "../entities/Votes/types";
 
 type NewProposalMap = {
@@ -255,6 +257,17 @@ export class Governance extends API {
   }
 
   async getCommittee() {
+    const result = await this.fetch<ApiResponse<string[]>>(`/committee`)
+    return result.data
+  }
+
+  async getPOITiles() {
+    const pois = await Catalyst.get().getPOIs()
+    let poiTiles: any = []
+    Promise.all(pois.map(async poi => {
+      let tile: any = await Land.get().getTile(poi)
+      poiTiles.push(tile)
+    }))
     const result = await this.fetch<ApiResponse<string[]>>(`/committee`)
     return result.data
   }

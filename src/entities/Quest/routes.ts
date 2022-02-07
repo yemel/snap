@@ -5,6 +5,7 @@ import handleAPI, { handleJSON } from 'decentraland-gatsby/dist/entities/Route/h
 import { v1 as uuid } from 'uuid'
 import {
   QuestAttributes,
+  QuestCategory,
   QuestStatus
 } from './types';
 import RequestError from 'decentraland-gatsby/dist/entities/Route/error';
@@ -16,6 +17,7 @@ import {
 } from './utils';
 import isUUID from 'validator/lib/isUUID';
 import QuestModel from './model';
+import Catalyst from "decentraland-gatsby/dist/utils/api/Catalyst"
 
 export default routes((route) => {
   const withAuth = auth()
@@ -87,18 +89,27 @@ export async function getQuest(req: Request<{ quest: string }>) {
   return QuestModel.parse(quest)
 }
 
-
 export async function createQuest(req: WithAuth) {
   const user = req.auth!
-  const configuration = req.body
+  const body = req.body
+  const category = body.category
   
   const id = uuid()
-  const start_at = new Date(configuration.start_at)
-  const finish_at = new Date(configuration.finish_at)
+  const start_at = new Date(body.start_at)
+  const finish_at = new Date(body.finish_at)
 
-  const image_id = configuration.image_id
-  if(!isUUID(image_id)) {
-    throw new RequestError(`Invalid image id."`, RequestError.NotFound)
+  if(category == QuestCategory.Other) {
+    const image_id = body.configuration.image_id
+    if(!isUUID(image_id)) {
+      throw new RequestError(`Invalid image id."`, RequestError.NotFound)
+    }
+  }
+
+  if(category == QuestCategory.Event) {
+    const event_id = body.configuration.event_id
+    if(!isUUID(event_id)) {
+      throw new RequestError(`Invalid event id."`, RequestError.NotFound)
+    }
   }
 
   //
@@ -106,17 +117,12 @@ export async function createQuest(req: WithAuth) {
   //
   const newQuest: QuestAttributes = {
     id,
-    category: configuration.category,
+    category: body.category,
     status: QuestStatus.Pending,
-    title: configuration.title,
-    description: configuration.description,
-    configuration: JSON.stringify({
-      location: configuration.location
-    }),
+    configuration: JSON.stringify(body.configuration),
     start_at: start_at,
     updated_at: start_at,
     finish_at: finish_at,
-    image_id: configuration.image_id
   }
 
   try {
