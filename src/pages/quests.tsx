@@ -1,5 +1,5 @@
 import React, { useMemo, useEffect } from "react"
-import { useLocation } from "@reach/router"
+import { useLocation } from '@reach/router'
 import Grid from "semantic-ui-react/dist/commonjs/collections/Grid/Grid"
 import { Container } from "decentraland-ui/dist/components/Container/Container"
 import { Header } from "decentraland-ui/dist/components/Header/Header"
@@ -7,155 +7,130 @@ import { Loader } from "decentraland-ui/dist/components/Loader/Loader"
 import { Button } from "decentraland-ui/dist/components/Button/Button"
 import { Pagination } from "decentraland-ui/dist/components/Pagination/Pagination"
 import { navigate } from "gatsby-plugin-intl"
-import Title from "decentraland-gatsby/dist/components/Text/Title"
-import { Card } from "decentraland-ui/dist/components/Card/Card"
-import { Link } from "gatsby-plugin-intl"
-import Paragraph from "decentraland-gatsby/dist/components/Text/Paragraph"
-import StatusLabel from '../components/Status/StatusLabel'
-import CategoryLabel from '../components/Category/CategoryLabel'
-import FinishLabel from '../components/Status/FinishLabel'
-
-import locations, {
-  ProposalListView,
-  toProposalListPage,
-  toProposalListView,
-  WELCOME_STORE_KEY,
-  WELCOME_STORE_VERSION,
-} from "../modules/locations"
+import Navigation, { NavigationTab } from "../components/Layout/Navigation"
+import locations, { QuestListView, toQuestListPage, toQuestListView } from "../modules/locations"
 import ActionableLayout from "../components/Layout/ActionableLayout"
-import {
-  ProposalStatus,
-  ProposalType,
-  toProposalStatus,
-  toProposalType,
-} from "../entities/Proposal/types"
-import {
-  toQuestCategory,
-} from "../entities/Quest/types"
+import CategoryOption from "../components/Quest/CategoryOption"
+import { QuestStatus, QuestCategory, toQuestStatus, toQuestCategory } from "../entities/Quest/types"
 import useFormatMessage from "decentraland-gatsby/dist/hooks/useFormatMessage"
-import useSubscriptions from "../hooks/useSubscriptions"
-import Empty from "../components/Proposal/Empty"
+import StatusMenu from "../components/Quest/StatusMenu"
+import CategoryBanner from "../components/Quest/CategoryBanner"
+import QuestItem from "../components/Quest/QuestItem"
+import Empty from "../components/Quest/Empty"
 import Head from "decentraland-gatsby/dist/components/Head/Head"
+import Link from "decentraland-gatsby/dist/components/Text/Link"
+import prevent from "decentraland-gatsby/dist/utils/react/prevent"
 import useQuests from "../hooks/useQuests"
-import "./index.css"
-import { QuestStatus } from "../entities/Quest/types"
+import { Governance } from "../api/Governance"
+import useAsyncMemo from "decentraland-gatsby/dist/hooks/useAsyncMemo"
+import './quests.css'
 
 const ITEMS_PER_PAGE = 25
 
-enum Onboarding {
-  Loading,
-  Yes,
-  No,
-}
-
-export default function IndexPage() {
+export default function QuestsPage() {
   const l = useFormatMessage()
   const location = useLocation()
-  const params = useMemo(() => new URLSearchParams(location.search), [
-    location.search,
-  ])
-  const category = toQuestCategory(params.get("category")) ?? undefined
-  const view = toProposalListView(params.get("view")) ?? undefined
-  const status = QuestStatus.Active
-  const page = toProposalListPage(params.get("page")) ?? undefined
-
+  const params = useMemo(() => new URLSearchParams(location.search), [ location.search ])
+  const category = toQuestCategory(params.get('category')) ?? undefined
+  const view = toQuestListView(params.get('view')) ?? undefined
+  const status = view ? QuestStatus.Active : toQuestStatus(params.get('status')) ?? undefined
+  const page = toQuestListPage(params.get('page')) ?? undefined
   const [ quests, questsState ] = useQuests({ category, status, page, itemsPerPage: ITEMS_PER_PAGE })
 
   useEffect(() => {
-    if (typeof quests?.total === "number") {
+    if (typeof quests?.total === 'number') {
       const maxPage = Math.ceil(quests.total / ITEMS_PER_PAGE)
       if (page > maxPage) {
         handlePageFilter(maxPage)
       }
     }
-  }, [page, quests])
+  }, [ page, quests ])
 
   function handlePageFilter(page: number) {
     const newParams = new URLSearchParams(params)
-    page !== 1 ? newParams.set("page", String(page)) : newParams.delete("page")
-    return navigate(locations.proposals(newParams))
+    page !== 1 ? newParams.set('page', String(page)) : newParams.delete('page')
+    return navigate(locations.quests(newParams))
   }
 
-  return (
-    <>
-      <Head
-        title={
-          (view === ProposalListView.Onboarding && l("page.welcome.title")) ||
-          ""
-        }
-        description={
-          (view === ProposalListView.Onboarding &&
-            l("page.welcome.description")) ||
-          ""
-        }
-        image="https://decentraland.org/images/decentraland.png"
-      />
-      <Container>
-        <Grid stackable>
-          <Grid.Row>
-            <div style={{ display: "flex", flexDirection: "column" }}>
-              <Title>Quests</Title>
-              <Paragraph>
-                Here you will see all your available objectives!
-              </Paragraph>
-            </div>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column tablet="16">
-              <ActionableLayout
-                leftAction={
-                  <Header sub>
-                    {!quests && ""}
-                    {quests &&
-                      l(`general.count_quests`, {
-                        count: quests.total || 0,
-                      })}
-                  </Header>
-                }
-              >
-                {/* <Loader active={!proposals || proposalsState.loading} /> */}
-                {quests && quests.data.length === 0 && (
-                  <Empty
-                    description={l(`page.proposal_list.no_proposals_yet`)}
-                  />
-                )}
-                {quests &&
-                  quests.data.map((quest) => {
-                    return (
-                      <Card
-                        as={Link}
-                        to={`/quest?id=${quest.id}`}
-                        style={{ width: "100%" }}
-                      >
-                        <Card.Content>
-                          <Header>{quest.title}</Header>
-                          <div style={{display:"flex"}}>
-                            <StatusLabel status={quest.status} />
-                            {/* Esto deberia ir cuando se creen mas de una categoria =) */}
-                            {/* <CategoryLabel  type={quest.category} /> */}
-                            <CategoryLabel  type={"poi"} />
-                            <FinishLabel date={quest.finish_at} />
-                          </div>
-                        </Card.Content>
-                      </Card>
-                    )
-                  })}
-                {quests && quests.total > ITEMS_PER_PAGE && (
-                  <Pagination
-                    onPageChange={(e, { activePage }) =>
-                      handlePageFilter(activePage as number)
-                    }
-                    totalPages={Math.ceil(quests.total / ITEMS_PER_PAGE)}
-                    activePage={page}
-                    firstItem={null}
-                    lastItem={null}
-                  />
-                )}
-              </ActionableLayout>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </Container>
-    </>
-  )
+  function handleCategoryFilter(category: QuestCategory | null) {
+    const newParams = new URLSearchParams(params)
+    category ? newParams.set('category', category) : newParams.delete('category')
+    newParams.delete('page')
+    return locations.quests(newParams)
+  }
+
+  function handleStatusFilter(status: QuestStatus | null) {
+    const newParams = new URLSearchParams(params)
+    status ? newParams.set('status', status) : newParams.delete('status')
+    newParams.delete('page')
+    return navigate(locations.quests(newParams))
+  }
+
+  return <>
+    <Head
+      title={
+        (view === QuestListView.Active && l('page.proposal_enacted_list.title')) ||
+        (category === QuestCategory.Event && l('page.proposal_catalyst_list.title')) ||
+        (category === QuestCategory.Other && l('page.proposal_catalyst_list.title')) ||
+        (category === QuestCategory.PointOfInterest && l('page.proposal_catalyst_list.title')) ||
+        l('page.proposal_list.title') || ''
+      }
+      description={
+        (view === QuestListView.Active && l('page.proposal_enacted_list.description')) ||
+        (category === QuestCategory.Event && l('page.proposal_catalyst_list.description')) ||
+        (category === QuestCategory.Other && l('page.proposal_catalyst_list.description')) ||
+        (category === QuestCategory.PointOfInterest && l('page.proposal_catalyst_list.description')) ||
+        l('page.proposal_list.description') || ''
+      }
+      image="https://decentraland.org/images/decentraland.png"
+    />
+    <Navigation activeTab={view !== QuestListView.Active ? NavigationTab.Proposals : NavigationTab.Enacted} />
+    <Container>
+      <Grid stackable>
+        <Grid.Row>
+          <Grid.Column tablet="4">
+            <ActionableLayout
+              leftAction={<Header sub>{l(`page.proposal_list.categories`)}</Header>}
+            >
+              <CategoryOption type={'all'} href={handleCategoryFilter(null)} active={category === null} />
+              <CategoryOption type={QuestCategory.Event} href={handleCategoryFilter(QuestCategory.Event)} active={category === QuestCategory.Event} />
+              <CategoryOption type={QuestCategory.PointOfInterest} href={handleCategoryFilter(QuestCategory.PointOfInterest)} active={category === QuestCategory.PointOfInterest} />
+              <CategoryOption type={QuestCategory.Other} href={handleCategoryFilter(QuestCategory.Other)} active={category === QuestCategory.Other} />
+            </ActionableLayout>
+          </Grid.Column>
+          <Grid.Column tablet="12">
+            <ActionableLayout
+              leftAction={<Header sub>
+                {!quests && ''}
+                {quests && l(`general.count_proposals`, { count: quests.total || 0 })}
+              </Header>}
+              rightAction={view !== QuestListView.Active && <>
+                <StatusMenu style={{ marginRight: '1rem' }} value={status} onChange={(_, { value }) => handleStatusFilter(value)} />
+                <Button primary size="small" as={Link} href={locations.createQuest()} onClick={prevent(() => navigate(locations.createQuest()))}>
+                  {l(`page.proposal_list.new_proposal`)}
+                </Button>
+              </>}
+            >
+              <Loader active={!quests || questsState.loading} />
+              {category && <CategoryBanner type={category} active />}
+              {quests && quests.data.length === 0 && <Empty description={l(`page.proposal_list.no_proposals_yet`)} />}
+              {quests && quests.data.map(quest => {
+                return <QuestItem
+                  key={quest.id}
+                  quest={quest}
+                />
+              })}
+              {quests && quests.total > ITEMS_PER_PAGE && <Pagination
+                onPageChange={(e, { activePage }) => handlePageFilter(activePage as number)}
+                totalPages={Math.ceil(quests.total / ITEMS_PER_PAGE)}
+                activePage={page}
+                firstItem={null}
+                lastItem={null}
+              />}
+            </ActionableLayout>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </Container>
+  </>
 }
