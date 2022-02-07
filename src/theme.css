@@ -97,11 +97,9 @@ body {
 }
 
 :root {
-  --background-catalyst: #4888EE;
-  --background-poi: #44B600;
-  --background-ban-name: #FF5AFE;
-  --background-grant: #3C24B3;
-  --background-poll: #FF7439;
+  --background-point_of_interest: #44B600;
+  --background-other: #3C24B3;
+  --background-event: #FF7439;
 }
 
 

@@ -1,0 +1,25 @@
+.QuestItem {
+  position: relative;
+}
+
+.QuestItem .QuestItem__Title {
+  padding-bottom: 24px;
+  padding-right: 40px;
+}
+
+.QuestItem .QuestItem__Title .ui.button {
+  position: absolute;
+  padding: 16px 20px;
+  top: 0;
+  right: 0;
+  display: none;
+}
+
+.QuestItem .QuestItem__Title .ui.loading.loading.loading.loading.button {
+  position: absolute;
+}
+
+.QuestItem:hover .QuestItem__Title .ui.button,
+.QuestItem.QuestItem--subscribed .QuestItem__Title .ui.button {
+  display: block;
+}

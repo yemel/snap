@@ -1,4 +1,18 @@
 {
+  "quest_category": {
+    "event_title": "Event",
+    "event_description": "Event",
+    "point_of_interest_title": "Point of Interest",
+    "point_of_interest_description": "Point of Interest",
+    "other_title": "Other",
+    "other_description": "Other"
+  },
+  "quest_status": {
+    "all": "All",
+    "pending": "Pending",
+    "active": "Active",
+    "finished": "Finished"
+  },
   "general": {
     "number": "{value, number}",
     "count_quests": "{count} {count, plural, one {quest} other {quests}}",
@@ -261,6 +275,14 @@
       "delegations_from_title": "Your delegation",
       "delegations_from_you_empty": "You have not delegated your voting power",
       "delegations_from_address_empty": "This address has not delegated its voting power"
+    },
+    "create": {
+      "title": "Create a new quest",
+      "description": "Select a quest category!",
+      "button_submit": "Create Quest",
+      "character_counter": "({current} out of {limit} characters)",
+      "markdown_tooltip": " (markdown)",
+      "markdown_notice": "You can format your quest using markdown! Toggle the preview switch to see how your post will be displayed. "
     },
     "submit": {
       "title": "Submit Proposal",

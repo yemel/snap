@@ -1,0 +1,64 @@
+
+.CategoryLabel {
+  text-transform: uppercase;
+  padding: 1px 11px;
+  height: 24px;
+  display: inline-flex;
+  color: #736E7D;
+  border-radius: 42px;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 20px;
+  margin-right: .5rem;
+  vertical-align: middle;
+  align-content: center;
+  position: relative;
+}
+
+.CategoryLabel::before {
+  display: block;
+  content: "";
+  border: 1px solid transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .08;
+  border-radius: 42px;
+}
+
+.CategoryLabel.CategoryLabel--point_of_interest::before {
+  background-color: var(--background-point_of_interest);
+  border-color: var(--background-point_of_interest);
+}
+
+.CategoryLabel.CategoryLabel--point_of_interest span {
+  color: var(--background-point_of_interest);
+}
+
+.CategoryLabel.CategoryLabel--event::before {
+  background-color: var(--background-event);
+  border-color: var(--background-event);
+}
+
+.CategoryLabel.CategoryLabel--event span {
+  color: var(--background-event);
+}
+
+
+.CategoryLabel.CategoryLabel--other::before {
+  background-color: var(--background-other);
+  border-color: var(--background-other);
+}
+
+.CategoryLabel.CategoryLabel--other span {
+  color: var(--background-other);
+}
+
+
+.CategoryLabel span {
+  display: block;
+  line-height: 20px;
+  padding: 1px 0;
+}

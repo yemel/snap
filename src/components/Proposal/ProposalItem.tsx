@@ -11,7 +11,7 @@ import { ProposalAttributes } from '../../entities/Proposal/types'
 import './ProposalItem.css'
 import TokenList from 'decentraland-gatsby/dist/utils/dom/TokenList'
 import useAuthContext from 'decentraland-gatsby/dist/context/Auth/useAuthContext'
-import FinishLabel from '../Status/FinishLabel'
+import FinishLabel from '../Quest/FinishLabel'
 
 export type ProposalItemProps = {
   proposal: ProposalAttributes,
@@ -37,7 +37,7 @@ export default function ProposalItem({ proposal, subscribing, subscribed, onSubs
   }>
       <Card.Content>
         <div className="ProposalItem__Title">
-          <Header>{proposal.title}</Header>
+          <Header>{proposal.configuration.title}</Header>
           {account && <Button basic onClick={handleSubscription} loading={subscribing} disabled={subscribing}>
             <img src={subscribed ? subscribedIcon : subscribeIcon} width="20" height="20"/>
           </Button>}

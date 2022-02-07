@@ -1,18 +1,18 @@
 import Loader from "decentraland-gatsby/dist/utils/loader/Loader"
 import { Governance } from "../api/Governance"
-import { ProposalAttributes } from "../entities/Proposal/types"
+import { QuestAttributes } from "../entities/Quest/types"
 
-const proposals = new Loader<ProposalAttributes | null>((proposalId) => {
-  return Governance.get().getProposal(String(proposalId))
+const quests = new Loader<QuestAttributes | null>((questId) => {
+  return Governance.get().getQuest(String(questId))
 })
 
-export async function cacheProposals(loader: Promise<ProposalAttributes[]>) {
+export async function cacheQuests(loader: Promise<QuestAttributes[]>) {
   const list = await loader
-  for (const proposal of list) {
-    proposals.set(proposal.snapshot_id, proposal)
+  for (const quest of list) {
+    quests.set(quest.id, quest)
   }
 
   return list
 }
 
-export default  { proposals }
+export default  { quests }
