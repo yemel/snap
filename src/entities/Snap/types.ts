@@ -16,8 +16,7 @@ export type SnapAttributes<C extends {} = any> = {
 
 export enum SnapStatus {
   Pending = 'pending',
-  Active = 'active',
-  Finished = 'curated',
+  Curated = 'curated',
   Rejected = 'rejected',
 }
 
@@ -25,6 +24,18 @@ export enum SnapCategory {
   IgPhoto = 'ig_photo',
   IgVideo = 'ig_video'
 }
+
+export function isSnapStatus(value:  string | null | undefined): boolean {
+  switch (value) {
+    case SnapStatus.Pending:
+    case SnapStatus.Curated:
+    case SnapStatus.Rejected:
+      return true
+    default:
+      return false
+  }
+}
+
 
 export type NewSnap = {
   category: SnapCategory

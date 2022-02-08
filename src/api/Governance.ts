@@ -3,7 +3,7 @@ import { ApiResponse } from "decentraland-gatsby/dist/utils/api/types";
 import Time from "decentraland-gatsby/dist/utils/date/Time";
 import env from "decentraland-gatsby/dist/utils/env";
 import { NewProposalBanName, NewProposalCatalyst, NewProposalPOI, NewProposalPoll, NewProposalGrant, ProposalAttributes, ProposalType, ProposalStatus } from "../entities/Proposal/types";
-import { NewSnap, SnapAttributes } from "../entities/Snap/types";
+import { NewSnap, SnapAttributes, SnapStatus } from "../entities/Snap/types";
 import { NewQuest, QuestAttributes, QuestCategory, QuestStatus } from "../entities/Quest/types";
 import { SubscriptionAttributes } from "../entities/Subscription/types";
 import Catalyst from "decentraland-gatsby/dist/utils/api/Catalyst"
@@ -33,6 +33,14 @@ export type GetQuestsFilter = {
   limit: number,
   offset: number
 }
+
+export type GetSnapsFilter = {
+  quest_id: string,
+  status: SnapStatus,
+  limit: number,
+  offset: number
+}
+
 
 export class Governance extends API {
 
@@ -73,6 +81,13 @@ export class Governance extends API {
       ...quest,
       start_at: Time.date(quest.start_at),
       finish_at: Time.date(quest.finish_at),
+    }
+  }
+
+  static parseSnap(snap: SnapAttributes): SnapAttributes {
+    return {
+      ...snap,
+      taken_at: Time.date(snap.taken_at),
     }
   }
 
@@ -142,6 +157,24 @@ export class Governance extends API {
     return {
       ...quests,
       data: quests.data.map(quest => Governance.parseQuest(quest))
+    }
+  }
+
+  async getSnaps(filters: Partial<GetSnapsFilter> = {}) {
+    const params = new URLSearchParams(filters as any)
+    let query = params.toString()
+    if (query) {
+      query = '?' + query
+    }
+
+    let options = this.options().method('GET')
+
+    const snaps = await this.fetch<ApiResponse<SnapAttributes[]> & { total: number }>(`/snap${query}`, options)
+
+    console.log("Snaps: ", snaps)
+    return {
+      ...snaps,
+      data: Array.from(snaps.data).map(snap => Governance.parseSnap(snap))
     }
   }
 

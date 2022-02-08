@@ -31,6 +31,7 @@ export default routes((route) => {
   const withAuth = auth()
   const withOptionalAuth = auth({ optional: true })
   route.post(`/snap`, withAuth, handleAPI(createSnap))
+  route.get(`/snap`, withOptionalAuth, handleJSON(getSnaps))
 })
 
 function formatError(err: Error) {
@@ -84,7 +85,7 @@ export async function createSnap(req: WithAuth) {
     user,
     taken_at,
     category: configuration.category,
-    status: SnapStatus.Active,
+    status: SnapStatus.Pending,
     title: configuration.title,
     description: configuration.description,
     configuration: JSON.stringify({}),
@@ -105,4 +106,31 @@ export async function createSnap(req: WithAuth) {
 
   return SnapModel.parse(newSnap)
 
+}
+
+export async function getSnaps(req: WithAuth<Request>) {
+  const quest_id = req.query.quest_id && String(req.query.quest_id)
+  const status = req.query.status && String(req.query.status)
+
+  let offset =
+    req.query.offset && Number.isFinite(Number(req.query.offset))
+      ? Number(req.query.offset)
+      :0
+
+  let limit =
+    req.query.limit && Number.isFinite(Number(req.query.limit))
+      ? Number(req.query.limit)
+      : 25
+      
+  const [total, data] = await Promise.all([
+    SnapModel.getSnapsTotal({ quest_id }),
+    SnapModel.getSnapsList({
+      quest_id,
+      offset, 
+      limit,
+    }),
+  ])
+  
+
+  return { ok: true, total, data }
 }
