@@ -29,7 +29,7 @@ export default function Landing() {
       <ImageWithDescription
         image={"/Vote.png"}
         imageLocation={"right"}
-        hasButton={"yes"}
+        hasButton={"no"}
         buttonText={"Curate Content"}
         link="/curation"
         desc={
@@ -39,7 +39,7 @@ export default function Landing() {
       <ImageWithDescription
         image={"/Tokens.png"}
         imageLocation={"left"}
-        hasButton={"yes"}
+        hasButton={"no"}
         buttonText={"Browse Market"}
         link="/marketplace"
         desc={

@@ -84,7 +84,9 @@ export default function QuestsPage() {
       }
       image="https://decentraland.org/images/decentraland.png"
     />
-    <Navigation activeTab={view !== QuestListView.Active ? NavigationTab.Proposals : NavigationTab.Enacted} />
+    {/* <Navigation activeTab={view !== QuestListView.Active ? NavigationTab.Proposals : NavigationTab.Enacted} /> */}
+    <Navigation activeTab={NavigationTab.Proposals} />
+
     <Container>
       <Grid stackable>
         <Grid.Row>

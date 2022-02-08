@@ -28,7 +28,7 @@ const Navigation = (props: NavigationProps) => {
             {l('navigation.proposals')}
           </Tabs.Tab>
         </Link>
-        <Link to={locations.quests({ view: QuestListView.Active })}>
+        {/* <Link to={locations.quests({ view: QuestListView.Active })}>
           <Tabs.Tab active={props.activeTab === NavigationTab.Enacted}>
             {l('navigation.enacted')}
           </Tabs.Tab>
@@ -42,7 +42,7 @@ const Navigation = (props: NavigationProps) => {
           <Tabs.Tab active={props.activeTab === NavigationTab.Activity}>
             {l('navigation.activity')}
           </Tabs.Tab>
-        </Link>}
+        </Link>} */}
       </Tabs.Left>
     </Tabs>
   )
