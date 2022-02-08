@@ -98,7 +98,7 @@ export function asNumber(value: string | number): number {
 }
 
 export function snapshotUrl(hash: string) {
-  const target = new URL(process.env.GATSBY_SNAPSHOT_URL || '')
+  const target = new URL(process.env.GATSBY_SNAPSHOT_URL || 'https://snapshot.org/')
   target.pathname = ''
   target.hash = hash
   return target.toString()

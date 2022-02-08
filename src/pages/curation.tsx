@@ -4,7 +4,7 @@ import "./curation.css"
 //Libs
 import Title from "decentraland-gatsby/dist/components/Text/Title"
 import Paragraph from "decentraland-gatsby/dist/components/Text/Paragraph"
-import SnapCard from "../components/Snaps/snapCard"
+import SnapCard from "../components/Snap/snapCardOld"
 import { Button } from "decentraland-ui/dist/components/Button/Button"
 
 const Curation = () => {

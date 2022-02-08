@@ -10,7 +10,7 @@ import Paragraph from "decentraland-gatsby/dist/components/Text/Paragraph"
 // CSS
 import "./snapCard.css"
 
-export default function snapCard(props: any) {
+export default function snapCardOld(props: any) {
   // Fetch Image from API
   // const [imageURL, setImageURL] = useState()
   // useEffect(() => {
