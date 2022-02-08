@@ -4,14 +4,16 @@
   </a>
 </p>
 <h1 align="center">
-  # Decentralized Autonomous Organization
+  # Decentraland Snap
 </h1>
 
-The governance hub for Decentraland. Create and vote on proposals that help shape the future of the metaverse.
+The first Play-2-Earn photography game in Decentraland. Find a quest of your interest and take the best picture you can, then submit it and wait 24hrs to see if you won.
 
-![preview](./static/home.jpg)
+![preview](./static/Snap.png)
 
 ## Setup
+
+Use Node.js version 12
 
 ### environment setup
 
@@ -25,12 +27,12 @@ create a copy of `.env.example` and name it as `.env.development`
 
 if you are running this project locally you only need to check the following environment variables:
 
-* `CONNECTION_STRING`: make sure it is point to a valid database
-* `COMMITTEE_ADDRESSES`: list of eth addresses separated by `,` that will be able to enact finished proposals
-* `GATSBY_SNAPSHOT_SPACE`: a snapshot space where the proposal will be published
-* `SNAPSHOT_PRIVATE_KEY`, `GATSBY_SNAPSHOT_ADDRESS`: a pair address/key with permissions to publish at that snapshot space
-* `DISCOURSE_API_KEY`: the api key use to publish the proposals on the forum
-* `ALCHEMY_API_KEY`: an alchemy api key to check the voting power
+- `CONNECTION_STRING`: make sure it is point to a valid database
+- `COMMITTEE_ADDRESSES`: list of eth addresses separated by `,` that will be able to enact finished proposals
+- `GATSBY_SNAPSHOT_SPACE`: a snapshot space where the proposal will be published
+- `SNAPSHOT_PRIVATE_KEY`, `GATSBY_SNAPSHOT_ADDRESS`: a pair address/key with permissions to publish at that snapshot space
+- `DISCOURSE_API_KEY`: the api key use to publish the proposals on the forum
+- `ALCHEMY_API_KEY`: an alchemy api key to check the voting power
 
 ### setup the required voting power to pass
 
@@ -64,16 +66,12 @@ once you setup this project you can start it using the following command
 
 > Note 2: you can disabled `https` removing the `--https` flag in the `develop` script of your `package.json`
 
-## Project's structure
-
-You can find a full documentation about the project's structure in the [`decentraland-gatsby` repository](https://github.com/decentraland/decentraland-gatsby#project-structure)
-
 ### back and front ends
 
 this project runs gatsby as front-end and a nodejs server as back-end both connected through a proxy
 
-* locally this proxy is defined in [`gatsby-config.js` (`proxy` prop)](https://www.gatsbyjs.com/docs/api-proxy/#gatsby-skip-here)
-* at servers this proxy is defined in `Pulumi.ts` (`servicePaths` prop)
+- locally this proxy is defined in [`gatsby-config.js` (`proxy` prop)](https://www.gatsbyjs.com/docs/api-proxy/#gatsby-skip-here)
+- at servers this proxy is defined in `Pulumi.ts` (`servicePaths` prop)
 
 ### routes
 
