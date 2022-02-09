@@ -104,12 +104,12 @@ export default function QuestsPage() {
             <ActionableLayout
               leftAction={<Header sub>
                 {!quests && ''}
-                {quests && l(`general.count_proposals`, { count: quests.total || 0 })}
+                {quests && `${quests.total} QUESTS`}
               </Header>}
               rightAction={view !== QuestListView.Active && <>
                 <StatusMenu style={{ marginRight: '1rem' }} value={status} onChange={(_, { value }) => handleStatusFilter(value)} />
                 <Button primary size="small" as={Link} href={locations.createQuest()} onClick={prevent(() => navigate(locations.createQuest()))}>
-                  {l(`page.proposal_list.new_proposal`)}
+                  CREATE A QUEST
                 </Button>
               </>}
             >
