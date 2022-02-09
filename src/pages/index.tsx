@@ -1,10 +1,10 @@
 import React from "react"
 import useFormatMessage from "decentraland-gatsby/dist/hooks/useFormatMessage"
 import ImageWithDescription from "../components/Section/ImageWithDescription"
-import Grid from "semantic-ui-react/dist/commonjs/collections/Grid/Grid"
-import ImgFixed from "decentraland-gatsby/dist/components/Image/ImgFixed"
-import Title from "decentraland-gatsby/dist/components/Text/Title"
-import SubTitle from "decentraland-gatsby/dist/components/Text/SubTitle"
+// import Grid from "semantic-ui-react/dist/commonjs/collections/Grid/Grid"
+// import ImgFixed from "decentraland-gatsby/dist/components/Image/ImgFixed"
+// import Title from "decentraland-gatsby/dist/components/Text/Title"
+// import SubTitle from "decentraland-gatsby/dist/components/Text/SubTitle"
 
 export default function Landing() {
   const l = useFormatMessage()
@@ -38,7 +38,7 @@ export default function Landing() {
         buttonText={"Get Started"}
         title={"Decentraland Snap"}
         desc={
-          "Flooding the Internet with Epic Memories. An experiment in play-2-earn mechanics"
+          "Flooding the Internet with Epic Memories. The first Play-2-Earn photography game in Decentraland."
         }
       />
       <ImageWithDescription
