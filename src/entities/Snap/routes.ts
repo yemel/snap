@@ -7,6 +7,7 @@ import handleAPI, { handleJSON } from 'decentraland-gatsby/dist/entities/Route/h
 import validate from 'decentraland-gatsby/dist/entities/Route/validate';
 import schema from 'decentraland-gatsby/dist/entities/Schema'
 import { Discourse, DiscoursePost } from '../../api/Discourse';
+import isCommitee from "../Committee/isCommittee"
 import { DISCOURSE_AUTH, DISCOURSE_CATEGORY } from '../Discourse/utils';
 import Time from 'decentraland-gatsby/dist/utils/date/Time';
 import SnapModel from './model';
@@ -15,6 +16,7 @@ import {
   QuestAttributes
 } from '../Quest/types';
 import {
+  isSnapStatus,
   SnapAttributes,
   SnapStatus
 } from './types';
@@ -31,7 +33,8 @@ export default routes((route) => {
   const withAuth = auth()
   const withOptionalAuth = auth({ optional: true })
   route.post(`/snap`, withAuth, handleAPI(createSnap))
-  route.get(`/snap`, withOptionalAuth, handleJSON(getSnaps))
+  route.get(`/snap`, withAuth, handleJSON(getSnaps))
+  route.patch("/snap/:snap", withAuth, handleAPI(updateSnapStatus))
 })
 
 function formatError(err: Error) {
@@ -133,4 +136,54 @@ export async function getSnaps(req: WithAuth<Request>) {
   
 
   return { ok: true, total, data }
+}
+
+export async function getSnap(req: Request<{ snap: string }>) {
+  const id = req.params.snap
+  if (!isUUID(id || "")) {
+    throw new RequestError(`Not found snap: "${id}"`, RequestError.NotFound)
+  }
+
+  const snap = await SnapModel.findOne<SnapAttributes>({
+    id
+  })
+  if (!snap) {
+    throw new RequestError(`Not found snap: "${id}"`, RequestError.NotFound)
+  }
+
+  return SnapModel.parse(snap)
+}
+
+export async function updateSnapStatus(
+  req: WithAuth<Request<{ snap: string }>>
+) {
+  const user = req.auth!
+  const id = req.params.snap
+  if (!isCommitee(user)) {
+    throw new RequestError(
+      `Only committed menbers can change snap status`,
+      RequestError.Forbidden
+    )
+  }
+
+  const snap = await getSnap(req)
+  const status = req.body.status
+
+  if (!isSnapStatus(status)) {
+    throw new RequestError(
+      `snap status can't be updated to ${status}`,
+      RequestError.BadRequest
+    )
+  }
+
+  const update: Partial<SnapAttributes> = {
+    status: status
+  }
+
+  await SnapModel.update<SnapAttributes>(update, { id })
+
+  return {
+    ...snap,
+    ...update,
+  }
 }
