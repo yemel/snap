@@ -137,8 +137,8 @@ export default function SubmitPOIQuest() {
       <Header size="huge">Create a POI quest</Header>
     </ContentSection>
     <ContentSection>
-      <Paragraph small>Description 1</Paragraph>
-      <Paragraph small>Description 2</Paragraph>
+      <Paragraph small>Create a quest based on a Decentraland point of interest. Events data is gathered from event.decentraland.org</Paragraph>
+      
     </ContentSection>
     <ContentSection>
       <Label>Choose the Point of Interest</Label>
@@ -170,8 +170,7 @@ export default function SubmitPOIQuest() {
           onChange={(_, { value }) => editor.set({ start_at: new Date(value) }, { validate: false })}
           error={!!state.error.start_at}
         />
-    </ContentSection>
-    <ContentSection>
+    
       <Label>Quest finishing date</Label>
         <Field
           type="date"

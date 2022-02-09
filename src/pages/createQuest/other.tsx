@@ -174,7 +174,7 @@ export default function CreateQuest() {
   if (!account) {
     return <Container>
       <Head
-        title={l('page.submit_grant.title') || ''}
+        title="{l('page.submit_grant.title') || ''}"
         description={l('page.submit_grant.description') || ''}
         image="https://decentraland.org/images/decentraland.png"
       />
@@ -184,22 +184,22 @@ export default function CreateQuest() {
 
   return <ContentLayout small>
     <Head
-      title={l('page.submit_grant.title') || ''}
+      title="{l('page.submit_grant.title') || ''}"
       description={l('page.submit_grant.description') || ''}
       image="https://decentraland.org/images/decentraland.png"
     />
-    <Helmet title={l('page.submit_grant.title') || ''} />
+    <Helmet title="{l('page.submit_grant.title') || ''}" />
     <ContentSection>
-      <Header size="huge">{l('page.submit_grant.title')}</Header>
+      <Header size="huge">Create a custom quest</Header>
     </ContentSection>
-    <ContentSection className="MarkdownSection--tiny">
+    {/* <ContentSection className="MarkdownSection--tiny">
       {l.markdown('page.submit_grant.description')}
-    </ContentSection>
+    </ContentSection> */}
     <ContentSection>
       <Label>{l('page.submit_grant.title_label')}</Label>
       <Field
         value={state.value.title}
-        placeholder={l('page.submit_grant.title_placeholder')}
+        placeholder="Enter a descriptive title for your quest"
         onChange={(_, { value }) => editor.set({ title: value })}
         onBlur={() => editor.set({ title: state.value.title.trim() })}
         error={!!state.error.title}
@@ -220,7 +220,7 @@ export default function CreateQuest() {
       <MarkdownTextarea
         minHeight={175}
         value={state.value.description}
-        placeholder={l('page.submit_grant.description_placeholder')}
+        placeholder="Allows you to elaborate on the mission to fulfill in order to have a chance of winning the quest"
         onChange={(_: any, { value }: any) => editor.set({ description: value })}
         onBlur={() => editor.set({ description: state.value.description.trim() })}
         error={!!state.error.description}
@@ -264,8 +264,7 @@ export default function CreateQuest() {
           onChange={(_, { value }) => editor.set({ start_at: new Date(value) }, { validate: false })}
           error={!!state.error.start_at}
         />
-    </ContentSection>
-    <ContentSection>
+    
       <Label>Quest finishing date</Label>
         <Field
           type="date"
@@ -276,7 +275,7 @@ export default function CreateQuest() {
     </ContentSection>
     <ContentSection>
       <Button primary disabled={state.validated} loading={state.validated} onClick={() => editor.validate()}>
-        {l('page.submit.button_submit')}
+        CREATE QUEST
       </Button>
     </ContentSection>
     {state.error['*'] && <ContentSection>

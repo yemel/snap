@@ -139,8 +139,7 @@ export default function SubmitEventQuest() {
       <Header size="huge">Create an Event quest</Header>
     </ContentSection>
     <ContentSection>
-      <Paragraph small>Description 1</Paragraph>
-      <Paragraph small>Description 2</Paragraph>
+      <Paragraph small>Create a quest based on a Decentraland event. Events data is gathered from event.decentraland.org</Paragraph>
     </ContentSection>
     <ContentSection>
       <Label>Choose the event</Label>
@@ -172,8 +171,6 @@ export default function SubmitEventQuest() {
           onChange={(_, { value }) => editor.set({ start_at: new Date(value) }, { validate: false })}
           error={!!state.error.start_at}
         />
-    </ContentSection>
-    <ContentSection>
       <Label>Quest finishing date</Label>
         <Field
           type="date"
