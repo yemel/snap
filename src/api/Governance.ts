@@ -167,7 +167,7 @@ export class Governance extends API {
       query = '?' + query
     }
 
-    let options = this.options().method('GET')
+    let options = this.options().method('GET').authorization()
 
     const snaps = await this.fetch<ApiResponse<SnapAttributes[]> & { total: number }>(`/snap${query}`, options)
 
@@ -302,6 +302,18 @@ export class Governance extends API {
       poiTiles.push(tile)
     }))
     const result = await this.fetch<ApiResponse<string[]>>(`/committee`)
+    return result.data
+  }
+
+  async updateSnapStatus(snap_id: string, status: SnapStatus) {
+    const result = await this.fetch<ApiResponse<SnapAttributes>>(
+      `/snap/${snap_id}`,
+      this.options()
+        .method('PATCH')
+        .authorization()
+        .json({ status })
+    )
+
     return result.data
   }
 }
