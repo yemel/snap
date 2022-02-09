@@ -14,11 +14,14 @@ import Land from "decentraland-gatsby/dist/utils/api/Land"
 import Markdown from "decentraland-gatsby/dist/components/Text/Markdown"
 import useFormatMessage from "decentraland-gatsby/dist/hooks/useFormatMessage"
 import SubTitle from "decentraland-gatsby/dist/components/Text/SubTitle"
-import DateBox from "decentraland-gatsby/dist/components/Date/DateBox"
 import NotFound from "decentraland-gatsby/dist/components/Layout/NotFound"
 import ImgFixed from "decentraland-gatsby/dist/components/Image/ImgFixed"
 import Head from "decentraland-gatsby/dist/components/Head/Head"
 import { formatDescription } from "decentraland-gatsby/dist/components/Head/utils"
+import Catalyst from "decentraland-gatsby/dist/utils/api/Catalyst"
+
+// Decentraland UI
+import { Header } from "decentraland-ui/dist/components/Header/Header"
 
 // Gatsby
 import { Link } from "gatsby"
@@ -44,9 +47,11 @@ import { QuestCategory } from "../entities/Quest/types"
 import "./quests.css"
 import "./quest.css"
 
+import Pin from "../components/Icon/Pin"
 import EventSection from "./EventSection"
 import { Governance } from "../api/Governance"
 import useQuest from "../hooks/useQuest"
+import ProposalHeaderPoi from "../components/Proposal/ProposalHeaderPoi"
 
 type ProposalPageOptions = {
   changing: boolean
@@ -70,6 +75,7 @@ export default function QuestPage() {
   const [eventQuestData, setEventQuestData] = useState<any>()
   const [POITile, setPOITile] = useState<any>()
   const [committee] = useAsyncMemo(() => Governance.get().getCommittee(), [])
+  const [POIimage, setPOIimage] = useState<string>("")
 
   const [deleting, deleteQuest] = useAsyncTask(async () => {
     if (quest && account && committee && committee.includes(account)) {
@@ -90,6 +96,29 @@ export default function QuestPage() {
       }
     }
 
+    async function fetchPOIImage(x: number, y: number) {
+      const scenes = await Catalyst.get().getEntityScenes([[x, y]])
+      const scene = scenes[0]
+      if (!scene) {
+        return null
+      }
+
+      let image = scene?.metadata?.display?.navmapThumbnail || ""
+      if (image && !image.startsWith("https://")) {
+        const list = scene.content || []
+        const content = list.find((content) => content.file === image)
+        if (content) {
+          image = Catalyst.get().getContentUrl(content.hash)
+        }
+      }
+
+      if (!image || !image.startsWith("https://")) {
+        return null
+      }
+
+      return setPOIimage(image)
+    }
+
     async function fetchPOITile(x: number, y: number) {
       let tile = await Land.get().getTile([x, y])
       if (tile) {
@@ -104,6 +133,10 @@ export default function QuestPage() {
         fetchEvent(quest.configuration.event_id)
       } else if (quest.category == QuestCategory.PointOfInterest) {
         fetchPOITile(
+          Number(quest.configuration.poi_location_x),
+          Number(quest.configuration.poi_location_y)
+        )
+        fetchPOIImage(
           Number(quest.configuration.poi_location_x),
           Number(quest.configuration.poi_location_y)
         )
@@ -129,6 +162,9 @@ export default function QuestPage() {
     )
   }
 
+  var start_at = new Date(quest?.start_at)
+  var finish_at = new Date(quest?.finish_at)
+
   return (
     <>
       <Head
@@ -148,25 +184,84 @@ export default function QuestPage() {
         <Grid>
           {/* IMAGE */}
           <Grid.Row>
-            <Grid.Column width={10}>
-              <ImgFixed src={quest?.configuration.image_url} dimension="wide" />
-              <div style={{ minHeight: "24px", marginTop: "1rem" }}>
-                {quest && <StatusLabel status={quest.status} />}
-                {quest && <CategoryLabel type={quest.category} />}
-              </div>
-            </Grid.Column>
+            {quest?.category === "event" && (
+              <Grid.Column width={10}>
+                <ImgFixed
+                  src={quest?.configuration.image_url}
+                  dimension="wide"
+                />
+                <div style={{ minHeight: "24px", marginTop: "1rem" }}>
+                  {quest && <StatusLabel status={quest.status} />}
+                  {quest && <CategoryLabel type={quest.category} />}
+                </div>
+              </Grid.Column>
+            )}
+            {quest?.category === "point_of_interest" && (
+              // Hit DCL
+              <>
+                <Grid.Column width={5}>
+                  <ImgFixed dimension="wide" src={POIimage} />
+                  <div style={{ minHeight: "24px", marginTop: "1rem" }}>
+                    {quest && <StatusLabel status={quest.status} />}
+                    {quest && <CategoryLabel type={quest.category} />}
+                  </div>
+                </Grid.Column>
+                <Grid.Column width={5}>
+                  <ImgFixed
+                    dimension="wide"
+                    src={Land.get().getParcelImage([
+                      quest?.configuration.poi_location_x,
+                      quest?.configuration.poi_location_y,
+                    ])}
+                  />
+                  <Paragraph>
+                    {`Parcel ${quest?.configuration.poi_location_x},${quest?.configuration.poi_location_y}`}
+                    &nbsp;
+                  </Paragraph>
+                </Grid.Column>
+              </>
+            )}
+            {quest?.category === "other" && (
+              // S3
+              <Grid.Column width={10}>
+                <ImgFixed
+                  dimension="wide"
+                  src={`https://dcl-snaps.s3.amazonaws.com/${quest.configuration.image_id}.jpeg`}
+                />
+                <div style={{ minHeight: "24px", marginTop: "1rem" }}>
+                  {quest && <StatusLabel status={quest.status} />}
+                  {quest && <CategoryLabel type={quest.category} />}
+                </div>
+              </Grid.Column>
+            )}
           </Grid.Row>
 
           {/* DATE AND TITLE */}
           <Grid.Row>
-            <Grid.Column width={9}>
+            <Grid.Column width={10}>
               <SubTitle>{quest?.configuration.title}</SubTitle>
               <Paragraph small secondary>
                 Public, Organized by <Link2>{quest?.id || "Guest"}</Link2>
               </Paragraph>
             </Grid.Column>
-            <Grid.Column width={1}>
-              <DateBox date={new Date(quest?.start_at)} utc={true} />
+          </Grid.Row>
+
+          <Grid.Row>
+            <Grid.Column width={2}>
+              <Paragraph small secondary>
+                Start Date:
+              </Paragraph>
+            </Grid.Column>
+            <Grid.Column width={3}>
+              <Paragraph small>{start_at.toString()}</Paragraph>
+            </Grid.Column>
+            <Grid.Column width={2}>
+              <Paragraph small secondary>
+                End Date:
+              </Paragraph>
+            </Grid.Column>
+            <Grid.Column width={3}>
+              <Paragraph small>{finish_at.toString()}</Paragraph>
             </Grid.Column>
           </Grid.Row>
 
