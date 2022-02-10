@@ -36,6 +36,7 @@ export default function Landing() {
         imageLocation={"right"}
         hasButton={"yes"}
         buttonText={"Get Started"}
+        link="/quests"
         title={"Decentraland Snap"}
         desc={
           "Flooding the Internet with Epic Memories. The first Play-2-Earn photography game in Decentraland."
