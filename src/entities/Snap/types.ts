@@ -41,7 +41,7 @@ export type NewSnap = {
   category: SnapCategory
   title: string
   description: string
-  taken_at: string
+  taken_at: Date
   x: number
   y: number
   quest_id: string
