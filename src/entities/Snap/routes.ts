@@ -13,7 +13,7 @@ import Time from 'decentraland-gatsby/dist/utils/date/Time';
 import SnapModel from './model';
 import QuestModel from '../Quest/model';
 import {
-  QuestAttributes
+  QuestAttributes, QuestStatus
 } from '../Quest/types';
 import {
   isSnapStatus,
@@ -71,8 +71,8 @@ export async function createSnap(req: WithAuth) {
   
   const quest_id = configuration.quest_id
   const quest = await QuestModel.findOne<QuestAttributes>(quest_id)
-  if (!quest) {
-    throw new RequestError(`Quest not found: "${quest_id}"`, RequestError.NotFound)
+  if (!quest || quest.status !== QuestStatus.Active ) {
+    throw new RequestError(`Quest not found or not active: "${quest_id}"`, RequestError.NotFound)
   }
 
   const image_id = configuration.image_id
