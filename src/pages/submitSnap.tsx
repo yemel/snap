@@ -62,8 +62,8 @@ const SubmitSnap = () => {
             title: snapName,
             description: snapDescription,
             taken_at: timeDate,
-            x: 1,
-            y: 1,
+            x: locationX || 0,
+            y: locationY || 0,
             quest_id,
             image_id
         });
@@ -73,8 +73,9 @@ const SubmitSnap = () => {
     SetSnapName("")
     SetSnapDescription("")
     SetTags("")
-    SetTimeDate("")
-    SetLocation("")
+    SetTimeDate(new Date())
+    SetLocationX(undefined)
+    SetLocationY(undefined)
     SetImagePickerState(undefined)
   }
   //
@@ -96,9 +97,13 @@ const SubmitSnap = () => {
   const setTimeDateHandler = (event: any) => {
     SetTimeDate(event.target.value)
   }
-  const [location, SetLocation] = useState("")
-  const setLocationHandler = (event: any) => {
-    SetLocation(event.target.value)
+  const [locationX, SetLocationX] = useState()
+  const setLocationXHandler = (event: any) => {
+    SetLocationX(event.target.value)
+  }
+  const [locationY, SetLocationY] = useState()
+  const setLocationYHandler = (event: any) => {
+    SetLocationY(event.target.value)
   }
   //
 
@@ -106,7 +111,7 @@ const SubmitSnap = () => {
     <>
       <div className="Header">
         <Title style={{ color: "white" }}>Upload your best Snap</Title>
-        <Paragraph style={{ color: "white" }}>only ONE per day</Paragraph>
+        <Paragraph style={{ color: "white" }}>Win MANA if your Snap gets Featured!</Paragraph>
       </div>
       <div className="MainDiv">
         <div className="AllItems">
@@ -153,34 +158,37 @@ const SubmitSnap = () => {
               />
             </div>
             <div className="formcontrol">
-              <label htmlFor="name">Tags</label>
-              <input
-                type="text"
-                id="name"
-                value={tags}
-                onChange={setTagsHandler}
-                placeholder="Tags"
-              />
-            </div>
-            <div className="formcontrol">
-              <label htmlFor="name">Time Date</label>
+              <label htmlFor="name">Date the snap was taken at </label>
               <input
                 type="date"
-                id="name"
+                id="taken_at"
                 value={timeDate}
                 onChange={setTimeDateHandler}
                 placeholder="Enter the date when the picture was taken"
               />
             </div>
             <div className="formcontrol">
-              <label htmlFor="name">Location</label>
-              <input
-                type="text"
-                id="name"
-                value={location}
-                onChange={setLocationHandler}
-                placeholder="Enter (X,Y) location"
-              />
+              <label htmlFor="name">Location, X and Y coordinates</label>
+              <div style={{ display: 'flex', position: 'relative' }}>
+                <input
+                  type="number"
+                  min={-150}
+                  max={150}
+                  id="location_x"
+                  value={locationX}
+                  onChange={setLocationXHandler}
+                  placeholder="-150 to 150"
+                />
+                <input
+                  type="number"
+                  min={-150}
+                  max={150}
+                  id="location_y"
+                  value={locationY}
+                  onChange={setLocationYHandler}
+                  placeholder="-150 to 150"
+                />
+              </div>
             </div>
             <Button primary type="submit">
               Submit
