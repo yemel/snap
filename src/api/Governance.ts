@@ -157,8 +157,6 @@ export class Governance extends API {
       query = '?' + query
     }
 
-    console.log("filters", filters)
-
     let options = this.options().method('GET')
     if (filters.snapsSubmitted) {
       options = options.authorization()
@@ -182,7 +180,6 @@ export class Governance extends API {
 
     const snaps = await this.fetch<ApiResponse<SnapAttributes[]> & { total: number }>(`/snap${query}`, options)
 
-    console.log("Snaps: ", snaps)
     return {
       ...snaps,
       data: Array.from(snaps.data).map(snap => Governance.parseSnap(snap))
