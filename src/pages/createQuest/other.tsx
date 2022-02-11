@@ -220,7 +220,7 @@ export default function CreateQuest() {
       <MarkdownTextarea
         minHeight={175}
         value={state.value.description}
-        placeholder="Allows you to elaborate on the mission to fulfill in order to have a chance of winning the quest"
+        placeholder="Enter Quest description"
         onChange={(_: any, { value }: any) => editor.set({ description: value })}
         onBlur={() => editor.set({ description: state.value.description.trim() })}
         error={!!state.error.description}

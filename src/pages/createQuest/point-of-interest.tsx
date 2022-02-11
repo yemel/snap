@@ -16,6 +16,8 @@ import useEditor, { assert, createValidator } from 'decentraland-gatsby/dist/hoo
 import ContentLayout, { ContentSection } from '../../components/Layout/ContentLayout'
 import { Governance } from '../../api/Governance'
 import Land from 'decentraland-gatsby/dist/utils/api/Land'
+import MarkdownTextarea from 'decentraland-gatsby/dist/components/Form/MarkdownTextarea'
+import MarkdownNotice from '../../components/Form/MarkdownNotice'
 import locations from '../../modules/locations'
 import loader from '../../modules/loader'
 import useAuthContext from 'decentraland-gatsby/dist/context/Auth/useAuthContext'
@@ -28,11 +30,13 @@ import Catalyst from "decentraland-gatsby/dist/utils/api/Catalyst"
 type POIQuestStatus = {
   start_at: Date,
   finish_at: Date,
+  description: string
 }
 
 const initialQuestState: POIQuestStatus = {
   start_at: new Date(),
   finish_at: new Date(),
+  description: ''
 }
 
 const edit = (state: POIQuestStatus, props: Partial<POIQuestStatus>) => {
@@ -42,7 +46,19 @@ const edit = (state: POIQuestStatus, props: Partial<POIQuestStatus>) => {
   }
 }
 
+const schema = {
+  description: {
+    type: 'string',
+    minLength: 20,
+    maxLength: 7000,
+  }
+}
+
 const validate = createValidator<POIQuestStatus>({
+  description: (state) => ({
+    description: assert(state.description.length <= schema.description.maxLength, 'error.grant.description_too_large') ||
+    undefined
+  }),
   start_at: (state) => ({
     start_at: assert(state.start_at >= new Date(Date.now()-10), 'Invalid start date')
   }),
@@ -50,6 +66,11 @@ const validate = createValidator<POIQuestStatus>({
     finish_at: assert(state.finish_at >= new Date(Date.now() -10) && state.finish_at > state.start_at, 'Invalid finish date')
   }),
   '*': (state) => ({
+    description: (
+      assert(state.description.length > 0, 'error.grant.description_empty') ||
+      assert(state.description.length >= schema.description.minLength, 'error.grant.description_too_short') ||
+      assert(state.description.length <= schema.description.maxLength, 'error.grant.description_too_large')
+    ),
     start_at: (
       assert(state.start_at >= new Date(Date.now()-10), 'Invalid start date')
     ),
@@ -93,7 +114,8 @@ export default function SubmitPOIQuest() {
           configuration: {
             poi_location_x: selectedPoi.x,
             poi_location_y: selectedPoi.y,
-            title: selectedPoi.name
+            title: selectedPoi.name,
+            description: state.value.description
           }
         })
         .then((quest) => {
@@ -161,6 +183,27 @@ export default function SubmitPOIQuest() {
         />
       }
       
+    </ContentSection>
+    <ContentSection>
+      <Label>
+        {l('page.submit_grant.description_label')}
+        <MarkdownNotice />
+      </Label>
+      <MarkdownTextarea
+        minHeight={175}
+        value={state.value.description}
+        placeholder="Enter Quest description"
+        onChange={(_: any, { value }: any) => editor.set({ description: value })}
+        onBlur={() => editor.set({ description: state.value.description.trim() })}
+        error={!!state.error.description}
+        message={
+          l.optional(state.error.description) + ' ' +
+          l('page.submit.character_counter', {
+            current: state.value.description.length,
+            limit: schema.description.maxLength
+          })
+        }
+      />
     </ContentSection>
     <ContentSection>
       <Label>Quest starting date</Label>
