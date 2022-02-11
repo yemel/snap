@@ -18,12 +18,13 @@ import {
 import isUUID from 'validator/lib/isUUID';
 import QuestModel from './model';
 import Catalyst from "decentraland-gatsby/dist/utils/api/Catalyst"
+import SnapModel from '../Snap/model';
 
 export default routes((route) => {
   const withAuth = auth()
   const withOptionalAuth = auth({ optional: true })
   route.get("/quests", withOptionalAuth, handleJSON(getQuests))
-  route.get("/quests/:quest", handleAPI(getQuest))
+  route.get("/quests/:quest", withOptionalAuth, handleAPI(getQuest))
   route.post("/quests", withAuth, handleAPI(createQuest))
 })
 
@@ -57,7 +58,7 @@ export async function getQuests(req: WithAuth<Request>) {
       : MAX_QUEST_LIMIT
 
   console.log("about to query quests...")
-  const [total, data] = await Promise.all([
+  let [total, data] = await Promise.all([
     QuestModel.getQuestsTotal({ category, status }),
     QuestModel.getQuestsList({
       category,
@@ -67,23 +68,37 @@ export async function getQuests(req: WithAuth<Request>) {
     }),
   ])
 
+  const user = req.auth!
+  console.log("user is ", user)
+  if(user) {
+    data = await Promise.all(data.map(async (quest) => {
+      const has_user_submitted = await SnapModel.hasUserSubmittedSnap({user, quest_id: quest.id})
+      return { ...quest, has_user_submitted}
+    }));
+  }
+
   return { ok: true, total, data }
 }
 
 
-export async function getQuest(req: Request<{ quest: string }>) {
-
+export async function getQuest(req: WithAuth<Request<{ quest: string }>>) {
   const id = req.params.quest
 
   if (!isUUID(id || "")) {
     throw new RequestError(`Quest not found: "${id}"`, RequestError.NotFound)
   }
 
-  const quest = await QuestModel.findOne<QuestAttributes>({
+  let quest = await QuestModel.findOne<QuestAttributes>({
     id
   })
   if (!quest) {
     throw new RequestError(`Quest not found: "${id}"`, RequestError.NotFound)
+  }
+
+  const user = req.auth!
+  if(user) {
+    const has_user_submitted = await SnapModel.hasUserSubmittedSnap({user, quest_id: quest.id})
+    quest = { ...quest, has_user_submitted}
   }
 
   return QuestModel.parse(quest)

@@ -41,7 +41,7 @@ import StatusLabel from "../components/Quest/QuestStatusLabel"
 import locations from "../modules/locations"
 
 // Entities
-import { QuestCategory } from "../entities/Quest/types"
+import { QuestCategory, QuestStatus } from "../entities/Quest/types"
 
 // CSS
 import "./quests.css"
@@ -69,7 +69,7 @@ export default function QuestPage() {
     confirmDeletion: false,
   })
   const [account, { provider }] = useAuthContext()
-  const [quest, questState] = useQuest(params.get("id"))
+  const [quest, questState] = useQuest(params.get("id"), account != null)
   const [questTitle, setQuestTitle] = useState<string>("")
   const [questDescription, setQuestDescription] = useState<string>("")
   const [eventQuestData, setEventQuestData] = useState<any>()
@@ -311,16 +311,28 @@ export default function QuestPage() {
 
           <Grid.Row>
             <Grid.Column width={4}>
-              {quest && (
+              {quest && quest.status === QuestStatus.Active && !Boolean(quest?.has_user_submitted) && (
                 <Link to={`/submitSnap/?quest_id=${quest.id}`}>
-                  <Button size="large" primary>
-                    Submit Snap
-                  </Button>
-                </Link>
+                <Button 
+                  size="large"
+                  primary
+                  >
+                  Submit Snap
+                </Button>
+              </Link>
+              )}
+              {quest && quest.status === QuestStatus.Active && Boolean(quest?.has_user_submitted) && (
+                <Button 
+                  size="large"
+                  disabled={ Boolean(quest?.has_user_submitted) }
+                  primary
+                  >
+                  Snap submitted!
+                </Button>
               )}
             </Grid.Column>
             <Grid.Column width={4}>
-              {quest && (
+              {quest && isCommittee && (
                 <Link to={`/snaps?quest_id=${quest.id}`}>
                   <Button size="huge" secondary>
                     See Snaps

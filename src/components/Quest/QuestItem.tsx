@@ -35,16 +35,22 @@ export default function QuestItem({ quest }: QuestItemProps) {
             <CategoryLabel type={quest.category} />
             <FinishLabel date={quest.finish_at} />
           </div>
-          <div
-            style={{
-              display: "flex",
-              alignContent: "center",
-              justifyContent: "center",
-            }}
-          >
-            <p style={{ marginBottom: "0px", marginRight: "5px" }}>Submitted</p>
-            <img src={`./tick.png`} width="24" height="24" />
-          </div>
+          
+            {
+              quest.has_user_submitted &&
+              <div
+                style={{
+                  display: "flex",
+                  alignContent: "center",
+                  justifyContent: "center",
+                }}
+              > 
+                <p style={{ marginBottom: "0px", marginRight: "5px" }}>Submitted</p>
+                <img src={`./tick.png`} width="24" height="24" />
+              </div>
+            }
+            
+          
         </div>
       </Card.Content>
     </Card>

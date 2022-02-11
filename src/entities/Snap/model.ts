@@ -45,6 +45,23 @@ export default class SnapModel extends Model<SnapAttributes> {
     return result && result[0] && Number(result[0].total) || 0
   }
 
+  static async hasUserSubmittedSnap(filter: Partial<FilterSnapList> = {}) {
+
+    const result = await this.query(SQL`
+      SELECT COUNT(*) as "total"
+      FROM ${table(SnapModel)} p
+      WHERE 1=1
+      ${conditional(!!filter.quest_id, SQL`AND p."quest_id" = ${filter.quest_id}`)}
+      ${conditional(!!filter.user, SQL`AND p."user" = ${filter.user}`)}
+    `)
+
+    if( result && result[0] && Number(result[0].total) > 0 ) {
+      return true
+    } else {
+      return false
+    }
+  }
+
   static async getSnapsList(filter: Partial<FilterSnapList & FilterPagination> = {}) {
 
     if (filter.status && !isSnapStatus(filter.status)) {

@@ -10,6 +10,8 @@ import { v4 as uuidv4 } from "uuid"
 import { SnapCategory } from '../entities/Snap/types'
 import { Governance } from "../api/Governance"
 import axios from "axios"
+import { navigate } from "gatsby-plugin-intl"
+import locations from "../modules/locations"
 
 const SubmitSnap = () => {
   const locationHook = useLocation()
@@ -28,6 +30,7 @@ const SubmitSnap = () => {
     e.preventDefault()
     var image_id = uuidv4()
     const quest_id = params.get('quest_id') || ""
+    SetLoading(true)
 
     // Call lambda to ask for signed URL to post in S3 Bucket
     let S3URL: any
@@ -67,20 +70,14 @@ const SubmitSnap = () => {
             quest_id,
             image_id
         });
-
-    console.log(questResult)
-
-    SetSnapName("")
-    SetSnapDescription("")
-    SetTags("")
-    SetTimeDate(new Date())
-    SetLocationX(undefined)
-    SetLocationY(undefined)
-    SetImagePickerState(undefined)
+    
+    SetLoading(false)
+    navigate(locations.quests())
   }
   //
 
   // State variables for all inputs
+  const [loading, SetLoading] = useState(false)
   const [snapName, SetSnapName] = useState("")
   const setSnapNameHandler = (event: any) => {
     SetSnapName(event.target.value)
@@ -190,7 +187,7 @@ const SubmitSnap = () => {
                 />
               </div>
             </div>
-            <Button primary type="submit">
+            <Button primary type="submit" loading={loading}>
               Submit
             </Button>
           </form>

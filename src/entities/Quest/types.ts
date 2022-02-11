@@ -8,6 +8,7 @@ export type QuestAttributes<C extends {} = any> = {
   start_at: Date
   updated_at: Date
   finish_at: Date
+  has_user_submitted?: boolean | string
 }
 
 export enum QuestStatus {

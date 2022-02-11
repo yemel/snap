@@ -31,11 +31,13 @@ import { QuestCategory } from '../../entities/Quest/types'
 import { start } from 'repl'
 
 type EventQuestStatus = {
+  description: string,
   start_at: Date,
   finish_at: Date,
 }
 
 const initialQuestState: EventQuestStatus = {
+  description: '',
   start_at: new Date(),
   finish_at: new Date(),
 }
@@ -47,7 +49,19 @@ const edit = (state: EventQuestStatus, props: Partial<EventQuestStatus>) => {
   }
 }
 
+const schema = {
+  description: {
+    type: 'string',
+    minLength: 20,
+    maxLength: 7000,
+  }
+}
+
 const validate = createValidator<EventQuestStatus>({
+  description: (state) => ({
+    description: assert(state.description.length <= schema.description.maxLength, 'error.grant.description_too_large') ||
+    undefined
+  }),
   start_at: (state) => ({
     start_at: assert(state.start_at >= new Date(Date.now()-10), 'Invalid start date')
   }),
@@ -55,6 +69,11 @@ const validate = createValidator<EventQuestStatus>({
     finish_at: assert(state.finish_at >= new Date(Date.now() -10) && state.finish_at > state.start_at, 'Invalid finish date')
   }),
   '*': (state) => ({
+    description: (
+      assert(state.description.length > 0, 'error.grant.description_empty') ||
+      assert(state.description.length >= schema.description.minLength, 'error.grant.description_too_short') ||
+      assert(state.description.length <= schema.description.maxLength, 'error.grant.description_too_large')
+    ),
     start_at: (
       assert(state.start_at >= new Date(Date.now()-10), 'Invalid start date')
     ),
@@ -95,7 +114,7 @@ export default function SubmitEventQuest() {
             event_id: selectedEvent.id,
             title: selectedEvent.name,
             image_url: selectedEvent.image,
-            description: selectedEvent.description 
+            description: state.value.description
           }
         })
         .then((quest) => {
@@ -162,6 +181,27 @@ export default function SubmitEventQuest() {
         />
       }
       
+    </ContentSection>
+    <ContentSection>
+      <Label>
+        {l('page.submit_grant.description_label')}
+        <MarkdownNotice />
+      </Label>
+      <MarkdownTextarea
+        minHeight={175}
+        value={state.value.description}
+        placeholder="Enter Quest description"
+        onChange={(_: any, { value }: any) => editor.set({ description: value })}
+        onBlur={() => editor.set({ description: state.value.description.trim() })}
+        error={!!state.error.description}
+        message={
+          l.optional(state.error.description) + ' ' +
+          l('page.submit.character_counter', {
+            current: state.value.description.length,
+            limit: schema.description.maxLength
+          })
+        }
+      />
     </ContentSection>
     <ContentSection>
       <Label>Quest starting date</Label>

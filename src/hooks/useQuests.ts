@@ -6,6 +6,7 @@ export type UseQuestsFilter = Omit<GetQuestsFilter, 'limit' | 'offset'> & {
   page: number
   itemsPerPage: number
   load: boolean
+  userSubmitted: string | null
 }
 
 export default function useQuests(filter: Partial<UseQuestsFilter> = {}) {
@@ -23,9 +24,13 @@ export default function useQuests(filter: Partial<UseQuestsFilter> = {}) {
       const params: Partial<GetQuestsFilter> = { limit, offset }
       if(filter.status) { params.status = filter.status }
       if(filter.category) { params.category = filter.category }
+      if(filter.userSubmitted) { params.snapsSubmitted = filter.userSubmitted }
+
+      console.log("Filters: ", params)
       return Governance.get().getQuests({ ...params, limit, offset })
     },
     [
+      filter.userSubmitted,
       filter.status,
       filter.category,
       filter.page,

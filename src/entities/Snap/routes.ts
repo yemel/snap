@@ -34,6 +34,7 @@ export default routes((route) => {
   const withOptionalAuth = auth({ optional: true })
   route.post(`/snap`, withAuth, handleAPI(createSnap))
   route.get(`/snap`, withAuth, handleJSON(getSnaps))
+  route.get(`/snap/curated`, withOptionalAuth, handleJSON(getCuratedSnaps))
   route.patch("/snap/:snap", withAuth, handleAPI(updateSnapStatus))
 })
 
@@ -75,6 +76,11 @@ export async function createSnap(req: WithAuth) {
     throw new RequestError(`Quest not found or not active: "${quest_id}"`, RequestError.NotFound)
   }
 
+  const has_user_submitted = await SnapModel.hasUserSubmittedSnap({user, quest_id: quest_id})
+  if (has_user_submitted ) {
+    throw new RequestError(`User has already submitted a snap for this quest!`, RequestError.Forbidden)
+  }
+
   const image_id = configuration.image_id
   if(!isUUID(image_id)) {
     throw new RequestError(`Invalid image id."`, RequestError.NotFound)
@@ -112,6 +118,14 @@ export async function createSnap(req: WithAuth) {
 }
 
 export async function getSnaps(req: WithAuth<Request>) {
+  const user = req.auth!
+  if (!isCommitee(user)) {
+    throw new RequestError(
+      `Only committe members can see snaps`,
+      RequestError.Forbidden
+    )
+  }
+
   const quest_id = req.query.quest_id && String(req.query.quest_id)
   const status = req.query.status && String(req.query.status)
 
@@ -127,6 +141,32 @@ export async function getSnaps(req: WithAuth<Request>) {
       
   const [total, data] = await Promise.all([
     SnapModel.getSnapsTotal({ quest_id }),
+    SnapModel.getSnapsList({
+      quest_id,
+      offset, 
+      limit,
+    }),
+  ])
+  
+
+  return { ok: true, total, data }
+}
+
+export async function getCuratedSnaps(req: WithAuth<Request>) {
+  const quest_id = req.query.quest_id && String(req.query.quest_id)
+
+  let offset =
+    req.query.offset && Number.isFinite(Number(req.query.offset))
+      ? Number(req.query.offset)
+      :0
+
+  let limit =
+    req.query.limit && Number.isFinite(Number(req.query.limit))
+      ? Number(req.query.limit)
+      : 25
+      
+  const [total, data] = await Promise.all([
+    SnapModel.getSnapsTotal({ quest_id, status: SnapStatus.Curated }),
     SnapModel.getSnapsList({
       quest_id,
       offset, 
@@ -161,7 +201,7 @@ export async function updateSnapStatus(
   const id = req.params.snap
   if (!isCommitee(user)) {
     throw new RequestError(
-      `Only committed menbers can change snap status`,
+      `Only committe members can change snap status`,
       RequestError.Forbidden
     )
   }

@@ -59,7 +59,6 @@ export default function SnapsPage() {
   const location = useLocation()
   const params = useMemo(() => new URLSearchParams(location.search), [location.search])
   const [options, patchOptions] = usePatchState<ProposalPageOptions>({ changing: false, confirmDeletion: false })
-  const [account, { provider }] = useAuthContext()
   const [quest, questState] = useQuest(params.get('quest_id'))
   const [questTitle, setQuestTitle] = useState<string>('')
   const [questDescription, setQuestDescription] = useState<string>('')

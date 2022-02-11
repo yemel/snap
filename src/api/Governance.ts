@@ -31,7 +31,8 @@ export type GetQuestsFilter = {
   category: QuestCategory,
   status: QuestStatus,
   limit: number,
-  offset: number
+  offset: number,
+  snapsSubmitted: boolean | string,
 }
 
 export type GetSnapsFilter = {
@@ -139,8 +140,13 @@ export class Governance extends API {
     return newQuest.data
   }
 
-  async getQuest(questId: string) {
-    const result = await this.fetch<ApiResponse<QuestAttributes>>(`/quests/${questId}`)
+  async getQuest(questId: string, snapsSubmitted: boolean = false) {
+    let options = this.options().method('GET')
+    if (snapsSubmitted) {
+      options = options.authorization()
+    }
+
+    const result = await this.fetch<ApiResponse<QuestAttributes>>(`/quests/${questId}`, options)
     return result.data ? Governance.parseQuest(result.data) : null
   }
 
@@ -151,7 +157,12 @@ export class Governance extends API {
       query = '?' + query
     }
 
+    console.log("filters", filters)
+
     let options = this.options().method('GET')
+    if (filters.snapsSubmitted) {
+      options = options.authorization()
+    }
 
     const quests = await this.fetch<ApiResponse<QuestAttributes[]> & { total: number }>(`/quests${query}`, options)
     return {

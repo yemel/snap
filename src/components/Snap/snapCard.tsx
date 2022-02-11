@@ -96,7 +96,7 @@ export default React.memo(function SnapCard(props: SnapCardProps) {
                   alignItems: "center",
                 }}
               >
-                <span>{ snap?.status === SnapStatus.Curated ? 'ALREADY CURATED': 'CURATED'}</span>
+                <span>{ snap?.status === SnapStatus.Curated ? 'ALREADY FEATURED': 'FEATURE'}</span>
               </Button>
         </Card.Description>
       </Card.Content>

@@ -13,6 +13,7 @@ import ActionableLayout from "../components/Layout/ActionableLayout"
 import CategoryOption from "../components/Quest/CategoryOption"
 import { QuestStatus, QuestCategory, toQuestStatus, toQuestCategory } from "../entities/Quest/types"
 import useFormatMessage from "decentraland-gatsby/dist/hooks/useFormatMessage"
+import useAuthContext from "decentraland-gatsby/dist/context/Auth/useAuthContext"
 import StatusMenu from "../components/Quest/StatusMenu"
 import CategoryBanner from "../components/Quest/CategoryBanner"
 import QuestItem from "../components/Quest/QuestItem"
@@ -30,12 +31,13 @@ const ITEMS_PER_PAGE = 25
 export default function QuestsPage() {
   const l = useFormatMessage()
   const location = useLocation()
+  const [ account, accountState ] = useAuthContext()
   const params = useMemo(() => new URLSearchParams(location.search), [ location.search ])
   const category = toQuestCategory(params.get('category')) ?? undefined
   const view = toQuestListView(params.get('view')) ?? undefined
   const status = view ? QuestStatus.Active : toQuestStatus(params.get('status')) ?? undefined
   const page = toQuestListPage(params.get('page')) ?? undefined
-  const [ quests, questsState ] = useQuests({ category, status, page, itemsPerPage: ITEMS_PER_PAGE })
+  const [ quests, questsState ] = useQuests({ category, status, page, itemsPerPage: ITEMS_PER_PAGE, userSubmitted: account})
 
   useEffect(() => {
     if (typeof quests?.total === 'number') {
