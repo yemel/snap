@@ -74,9 +74,6 @@ const validate = createValidator<QuestState>({
     description: assert(state.description.length <= schema.description.maxLength, 'error.grant.description_too_large') ||
     undefined
   }),
-  start_at: (state) => ({
-    start_at: assert(state.start_at >= new Date(Date.now()-10), 'Invalid start date')
-  }),
   finish_at: (state) => ({
     finish_at: assert(state.finish_at >= new Date(Date.now() -10) && state.finish_at > state.start_at, 'Invalid finish date')
   }),
@@ -90,9 +87,6 @@ const validate = createValidator<QuestState>({
       assert(state.description.length > 0, 'error.grant.description_empty') ||
       assert(state.description.length >= schema.description.minLength, 'error.grant.description_too_short') ||
       assert(state.description.length <= schema.description.maxLength, 'error.grant.description_too_large')
-    ),
-    start_at: (
-      assert(state.start_at >= new Date(Date.now()-10), 'Invalid start date')
     ),
     finish_at: (
       assert(state.finish_at >= new Date(Date.now() -10) && state.finish_at > state.start_at, 'Invalid finish date')

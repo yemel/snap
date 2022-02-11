@@ -159,7 +159,7 @@ const SubmitSnap = () => {
               <input
                 type="date"
                 id="taken_at"
-                value={timeDate}
+                value={timeDate.toString()}
                 onChange={setTimeDateHandler}
                 placeholder="Enter the date when the picture was taken"
               />

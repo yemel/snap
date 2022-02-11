@@ -173,8 +173,8 @@ export default function QuestPage() {
     )
   }
 
-  var start_at = new Date(quest?.start_at)
-  var finish_at = new Date(quest?.finish_at)
+  var start_at = new Date(quest?.start_at || '')
+  var finish_at = new Date(quest?.finish_at  || '')
 
   return (
     <>

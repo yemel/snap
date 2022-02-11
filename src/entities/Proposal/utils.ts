@@ -8,10 +8,9 @@ export const MIN_PROPOSAL_LIMIT = 0
 export const MAX_PROPOSAL_LIMIT = 100
 export const SITEMAP_ITEMS_PER_PAGE = 100
 
-export const MIN_NAME_SIZE = 2
-export const MAX_NAME_SIZE = 15
+
 export const DEFAULT_CHOICES = [ 'yes', 'no' ]
-export const REGEX_NAME = new RegExp(`^([a-zA-Z0-9]){${MIN_NAME_SIZE},${MAX_NAME_SIZE}}$`)
+export const REGEX_NAME = new RegExp(`^([a-zA-Z0-9]){${1},${2}}$`)
 
 export function isValidName(name: string) {
   return REGEX_NAME.test(name)
