@@ -77,6 +77,7 @@ export default {
   quest: (quest: string) => url(`/quest/`, { id: quest }),
   activity: (options: Partial<QuestsStatusFilter & QuestActivityFilter> | URLSearchParams = {}) => url(`/activity/`, options),
   createQuest: (type?: QuestCategory) => url(type ? `/createQuest/${String(type).replace(/_/g,'-')}/` : '/createQuest/', {}),
+  submitSnap: (quest_id: string) => url(`/submitSnap/`, { quest_id: quest_id }),
   balance: (options: Partial<{ address: string }> = {}) => url(`/balance/`, options),
   welcome: () => url(`/welcome/`, {}),
 }

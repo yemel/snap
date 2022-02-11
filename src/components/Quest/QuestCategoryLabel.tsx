@@ -16,6 +16,6 @@ export default React.memo(function CategoryLabel({ type, ...props }: CategoryLab
       `CategoryLabel--${type}`
     ])}
   >
-    <span>{type}</span>
+    <span>{type.replaceAll('_', ' ')}</span>
   </div>
 })

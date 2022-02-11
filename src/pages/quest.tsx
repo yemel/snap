@@ -52,6 +52,7 @@ import EventSection from "./EventSection"
 import { Governance } from "../api/Governance"
 import useQuest from "../hooks/useQuest"
 import ProposalHeaderPoi from "../components/Proposal/ProposalHeaderPoi"
+import { TimeToLeaveSharp } from "@mui/icons-material"
 
 type ProposalPageOptions = {
   changing: boolean
@@ -92,7 +93,6 @@ export default function QuestPage() {
       if (event.ok) {
         setEventQuestData(event.data)
         setQuestTitle(event.data.name)
-        setQuestDescription(event.data.description)
       }
     }
 
@@ -123,8 +123,7 @@ export default function QuestPage() {
       let tile = await Land.get().getTile([x, y])
       if (tile) {
         setPOITile(tile)
-        setQuestTitle(tile.name || "")
-        setQuestDescription("Submit the best Snap for this Point of Interest!")
+        setQuestTitle(tile.name || `Parcel ${tile.x},${tile.y}`)
       }
     }
 
@@ -142,8 +141,8 @@ export default function QuestPage() {
         )
       } else {
         setQuestTitle(quest.configuration.title)
-        setQuestDescription(quest.configuration.description)
       }
+      setQuestDescription(quest.configuration.description)
     }
   }, [quest])
 
@@ -151,6 +150,18 @@ export default function QuestPage() {
     () => !!(quest && account && committee && committee.includes(account)),
     [quest, account, committee]
   )
+
+  const getFormattedDate = (date: Date) => {
+    var year = date.getFullYear();
+  
+    var month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : '0' + month;
+  
+    var day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+    
+    return month + '/' + day + '/' + year;
+  }
 
   if (questState.error) {
     return (
@@ -239,10 +250,7 @@ export default function QuestPage() {
           {/* DATE AND TITLE */}
           <Grid.Row>
             <Grid.Column width={10}>
-              <SubTitle>{quest?.configuration.title}</SubTitle>
-              <Paragraph small secondary>
-                Public, Organized by <Link2>{quest?.id || "Guest"}</Link2>
-              </Paragraph>
+              <SubTitle>{questTitle}</SubTitle>
             </Grid.Column>
           </Grid.Row>
 
@@ -253,7 +261,7 @@ export default function QuestPage() {
               </Paragraph>
             </Grid.Column>
             <Grid.Column width={3}>
-              <Paragraph small>{start_at.toString()}</Paragraph>
+              <Paragraph small>{getFormattedDate(start_at)}</Paragraph>
             </Grid.Column>
             <Grid.Column width={2}>
               <Paragraph small secondary>
@@ -261,7 +269,7 @@ export default function QuestPage() {
               </Paragraph>
             </Grid.Column>
             <Grid.Column width={3}>
-              <Paragraph small>{finish_at.toString()}</Paragraph>
+              <Paragraph small>{getFormattedDate(finish_at)}</Paragraph>
             </Grid.Column>
           </Grid.Row>
 
@@ -275,29 +283,6 @@ export default function QuestPage() {
           <Grid.Row>
             <Grid.Column width={10}>
               <SubTitle>Quest Details</SubTitle>
-              <Paragraph small secondary>
-                Lorem Ipsum es simplemente el texto de relleno de las imprentas
-                y archivos de texto. Lorem Ipsum ha sido el texto de relleno
-                estándar de las industrias desde el año 1500, cuando un impresor
-                (N. del T. persona que se dedica a la imprenta) desconocido usó
-                una galería de textos y los mezcló de tal manera que logró hacer
-                un libro de textos especimen. No sólo sobrevivió 500 años, sino
-                que tambien ingresó como texto de relleno en documentos
-                electrónicos, quedando esencialmente
-              </Paragraph>
-            </Grid.Column>
-          </Grid.Row>
-
-          <Grid.Row>
-            <Grid.Column width={10}>
-              <EventSection.Divider />
-            </Grid.Column>
-          </Grid.Row>
-
-          <Grid.Row>
-            <Grid.Column width={10} className="QuestDetailDescription">
-              <SubTitle>Event Description</SubTitle>
-
               <Loader active={questState.loading} />
               <Markdown source={questDescription || ""} />
             </Grid.Column>
@@ -311,17 +296,17 @@ export default function QuestPage() {
 
           <Grid.Row>
             <Grid.Column width={4}>
-              {quest && quest.status === QuestStatus.Active && !Boolean(quest?.has_user_submitted) && (
-                <Link to={`/submitSnap/?quest_id=${quest.id}`}>
+              {quest && !Boolean(quest?.has_user_submitted) && (
                 <Button 
-                  size="large"
-                  primary
-                  >
-                  Submit Snap
+                    size="large"
+                    onClick={() => navigate(locations.submitSnap(quest.id))}
+                    disabled={ Boolean(quest.status !== QuestStatus.Active ) }
+                    primary
+                    >
+                    Submit Snap
                 </Button>
-              </Link>
               )}
-              {quest && quest.status === QuestStatus.Active && Boolean(quest?.has_user_submitted) && (
+              {quest && Boolean(quest?.has_user_submitted) && (
                 <Button 
                   size="large"
                   disabled={ Boolean(quest?.has_user_submitted) }
@@ -332,7 +317,7 @@ export default function QuestPage() {
               )}
             </Grid.Column>
             <Grid.Column width={4}>
-              {quest && isCommittee && (
+              {quest && (
                 <Link to={`/snaps?quest_id=${quest.id}`}>
                   <Button size="huge" secondary>
                     See Snaps

@@ -64,12 +64,23 @@ export default function SnapsPage() {
   const [questDescription, setQuestDescription] = useState<string>('')
   const [eventQuestData, setEventQuestData] = useState<any>()
   const [POITile, setPOITile] = useState<any>()
+  const [ account, accountState ] = useAuthContext()
   const [snaps] = useAsyncMemo(async () => {
     if(quest) { 
-        return Governance.get().getSnaps({ quest_id: quest.id , status: SnapStatus.Pending}) 
+      if(isCommittee) {
+        return Governance.get().getSnaps({ quest_id: quest.id }) 
+      } else {
+        return Governance.get().getCuratedSnaps({ quest_id: quest.id }) 
+      }
+        
     } 
     else return null
   }, [quest])
+  const [committee] = useAsyncMemo(() => Governance.get().getCommittee(), [])
+  const isCommittee = useMemo(
+    () => !!(quest && account && committee && committee.includes(account)),
+    [quest, account, committee]
+  )
 
   useEffect(() => {
     async function fetchEvent(event_id: string) {
@@ -116,7 +127,7 @@ export default function SnapsPage() {
     />
     <ContentLayout className="QuestDetailPage">
       <ContentSection>
-        <Header size="huge">{questTitle || ''} &nbsp;</Header>
+        <Header size="huge">{ isCommittee ? 'Select the winner Snaps' : 'Winning Snaps'}  &nbsp;</Header>
         <Loader active={!quest} />
         <div style={{ minHeight: '24px' }}>
           {quest && <StatusLabel status={quest.status} />}
@@ -129,9 +140,13 @@ export default function SnapsPage() {
                 {snaps.data.map((snap) => (
                     <SnapCard
                         snap={snap}
+                        committee={isCommittee}
                     />
                 ))}
             </Card.Group>
+        }
+        { snaps && snaps.ok && snaps.total == 0 &&
+          <Paragraph> No snaps to show yet! </Paragraph>
         }
       </ContentSection>
       

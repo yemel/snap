@@ -20,7 +20,8 @@ import SnapModel from "../../entities/Snap/model"
 
 
 export type SnapCardProps = {
-  snap?: SnapAttributes
+  snap?: SnapAttributes,
+  committee: boolean,
   loading?: boolean
 }
 
@@ -53,7 +54,7 @@ export default React.memo(function SnapCard(props: SnapCardProps) {
       ])}
     >
       <div className="SnapCard__Cover">
-        {snap && <div className="SnapCard_CurrentStatus">
+        {snap && props.committee && <div className="SnapCard_CurrentStatus">
             {snap.status}
         </div>}
         <ImgFixed src={getSnapImageSrc(snap?.image_id) || ""} dimension="wide" />
@@ -76,29 +77,34 @@ export default React.memo(function SnapCard(props: SnapCardProps) {
         </div>
 
         <Card.Header>{snap?.title || " "}</Card.Header>
-        <Card.Description>
-          <Button
-                primary
-                size="small"
-                disabled={props.loading || snap?.status === SnapStatus.Curated}
-                loading={statusChangeLoading}
-                onClick={async () => {
-                  SetStatusChangeLoading(true)
-                  Governance.get().updateSnapStatus(snap?.id || '', SnapStatus.Curated).then(
-                    res => SetStatusChangeLoading(false)
-                  )
-                }}
-                className="fluid"
-                target="_blank"
-                style={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <span>{ snap?.status === SnapStatus.Curated ? 'ALREADY FEATURED': 'FEATURE'}</span>
-              </Button>
+
+        {
+           props.committee && 
+           <Card.Description>
+            <Button
+                  primary
+                  size="small"
+                  disabled={props.loading || snap?.status === SnapStatus.Curated}
+                  loading={statusChangeLoading}
+                  onClick={async () => {
+                    SetStatusChangeLoading(true)
+                    Governance.get().updateSnapStatus(snap?.id || '', SnapStatus.Curated).then(
+                      res => SetStatusChangeLoading(false)
+                    )
+                  }}
+                  className="fluid"
+                  target="_blank"
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <span>{ snap?.status === SnapStatus.Curated ? 'SELECTED WINNER': 'SELECT WINNER'}</span>
+                </Button>
         </Card.Description>
+        }
+        
       </Card.Content>
     </Card>
   )

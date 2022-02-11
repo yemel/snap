@@ -186,6 +186,23 @@ export class Governance extends API {
     }
   }
 
+  async getCuratedSnaps(filters: Partial<GetSnapsFilter> = {}) {
+    const params = new URLSearchParams(filters as any)
+    let query = params.toString()
+    if (query) {
+      query = '?' + query
+    }
+
+    let options = this.options().method('GET')
+
+    const snaps = await this.fetch<ApiResponse<SnapAttributes[]> & { total: number }>(`/snap/curated${query}`, options)
+
+    return {
+      ...snaps,
+      data: Array.from(snaps.data).map(snap => Governance.parseSnap(snap))
+    }
+  }
+
 
   async createProposal<P extends keyof NewProposalMap>(path: P, proposal: NewProposalMap[P]) {
     const newProposal = await this.fetch<ApiResponse<ProposalAttributes>>(

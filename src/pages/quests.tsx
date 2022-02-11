@@ -38,6 +38,11 @@ export default function QuestsPage() {
   const status = view ? QuestStatus.Active : toQuestStatus(params.get('status')) ?? undefined
   const page = toQuestListPage(params.get('page')) ?? undefined
   const [ quests, questsState ] = useQuests({ category, status, page, itemsPerPage: ITEMS_PER_PAGE, userSubmitted: account})
+  const [committee] = useAsyncMemo(() => Governance.get().getCommittee(), [])
+  const isCommittee = useMemo(
+    () => !!(quests && account && committee && committee.includes(account)),
+    [quests, account, committee]
+  )
 
   useEffect(() => {
     if (typeof quests?.total === 'number') {
@@ -110,9 +115,10 @@ export default function QuestsPage() {
               </Header>}
               rightAction={view !== QuestListView.Active && <>
                 <StatusMenu style={{ marginRight: '1rem' }} value={status} onChange={(_, { value }) => handleStatusFilter(value)} />
+                { isCommittee && 
                 <Button primary size="small" as={Link} href={locations.createQuest()} onClick={prevent(() => navigate(locations.createQuest()))}>
                   CREATE A QUEST
-                </Button>
+                </Button> }
               </>}
             >
               <Loader active={!quests || questsState.loading} />

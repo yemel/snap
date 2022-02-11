@@ -38,12 +38,11 @@ export default function WelcomePage() {
   const status = toProposalStatus(params.get('status')) ?? undefined
   const page = toProposalListPage(params.get('page')) ?? undefined
   const list = toProposalActivityList(params.get('list'))
-  const load = !!account && !!list
   const filters = !account || !list ? {} :
     list === ProposalActivityList.MyProposals ? { user: account } :
     list === ProposalActivityList.Watchlist ? { subscribed: account } :
     {}
-  const [ proposals, proposalsState ] = useProposals({ load, page, status, ...filters, itemsPerPage: ITEMS_PER_PAGE })
+  const [ proposals, proposalsState ] = useProposals({ page, status, ...filters, itemsPerPage: ITEMS_PER_PAGE })
   const [ subscriptions, subscriptionsState ] = useSubscriptions()
   const [ results, subscriptionsResultsState ] = useAsyncMemo(() => Governance.get()
     .getVotes((proposals?.data || []).map(proposal => proposal.id)),

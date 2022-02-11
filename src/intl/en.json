@@ -1,11 +1,13 @@
 {
   "quest_category": {
+    "all_title": "All",
+    "all_description": "All",
     "event_title": "Event",
-    "event_description": "Event",
+    "event_description": "Quest from an event",
     "point_of_interest_title": "Point of Interest",
-    "point_of_interest_description": "Point of Interest",
+    "point_of_interest_description": "Quest from a Point of Interest",
     "other_title": "Other",
-    "other_description": "Other"
+    "other_description": "A custom quest"
   },
   "quest_status": {
     "all": "All",
