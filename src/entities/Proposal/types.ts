@@ -1,4 +1,3 @@
-import { MAX_NAME_SIZE, MIN_NAME_SIZE } from "./utils"
 
 export type ProposalAttributes<C extends {} = any> = {
   id: string
@@ -190,8 +189,8 @@ export const newProposalBanNameScheme = {
   properties: {
     name: {
       type: 'string',
-      minLength: MIN_NAME_SIZE,
-      maxLength: MAX_NAME_SIZE
+      minLength: 1,
+      maxLength: 2
     },
     description: {
       type: 'string',

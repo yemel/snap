@@ -3,7 +3,11 @@ import { ApiResponse } from "decentraland-gatsby/dist/utils/api/types";
 import Time from "decentraland-gatsby/dist/utils/date/Time";
 import env from "decentraland-gatsby/dist/utils/env";
 import { NewProposalBanName, NewProposalCatalyst, NewProposalPOI, NewProposalPoll, NewProposalGrant, ProposalAttributes, ProposalType, ProposalStatus } from "../entities/Proposal/types";
+import { NewSnap, SnapAttributes, SnapStatus } from "../entities/Snap/types";
+import { NewQuest, QuestAttributes, QuestCategory, QuestStatus } from "../entities/Quest/types";
 import { SubscriptionAttributes } from "../entities/Subscription/types";
+import Catalyst from "decentraland-gatsby/dist/utils/api/Catalyst"
+import Land from 'decentraland-gatsby/dist/utils/api/Land'
 import { Vote } from "../entities/Votes/types";
 
 type NewProposalMap = {
@@ -22,6 +26,22 @@ export type GetProposalsFilter = {
   limit: number,
   offset: number
 }
+
+export type GetQuestsFilter = {
+  category: QuestCategory,
+  status: QuestStatus,
+  limit: number,
+  offset: number,
+  snapsSubmitted: boolean | string,
+}
+
+export type GetSnapsFilter = {
+  quest_id: string,
+  status: SnapStatus,
+  limit: number,
+  offset: number
+}
+
 
 export class Governance extends API {
 
@@ -57,6 +77,21 @@ export class Governance extends API {
     }
   }
 
+  static parseQuest(quest: QuestAttributes): QuestAttributes {
+    return {
+      ...quest,
+      start_at: Time.date(quest.start_at),
+      finish_at: Time.date(quest.finish_at),
+    }
+  }
+
+  static parseSnap(snap: SnapAttributes): SnapAttributes {
+    return {
+      ...snap,
+      taken_at: Time.date(snap.taken_at),
+    }
+  }
+
   async getProposal(proposalId: string) {
     const result = await this.fetch<ApiResponse<ProposalAttributes>>(`/proposals/${proposalId}`)
     return result.data ? Governance.parseProposal(result.data) : null
@@ -80,6 +115,94 @@ export class Governance extends API {
       data: proposals.data.map(proposal => Governance.parseProposal(proposal))
     }
   }
+
+  async createSnap(snap: NewSnap) {
+    const newSnap = await this.fetch<ApiResponse<SnapAttributes>>(
+      `/snap`,
+      this.options()
+        .method('POST')
+        .authorization()
+        .json(snap)
+    )
+
+    return newSnap.data
+  }
+
+  async createQuest(quest: NewQuest) {
+    const newQuest = await this.fetch<ApiResponse<QuestAttributes>>(
+      `/quests`,
+      this.options()
+        .method('POST')
+        .authorization()
+        .json(quest)
+    )
+
+    return newQuest.data
+  }
+
+  async getQuest(questId: string, snapsSubmitted: boolean = false) {
+    let options = this.options().method('GET')
+    if (snapsSubmitted) {
+      options = options.authorization()
+    }
+
+    const result = await this.fetch<ApiResponse<QuestAttributes>>(`/quests/${questId}`, options)
+    return result.data ? Governance.parseQuest(result.data) : null
+  }
+
+  async getQuests(filters: Partial<GetQuestsFilter> = {}) {
+    const params = new URLSearchParams(filters as any)
+    let query = params.toString()
+    if (query) {
+      query = '?' + query
+    }
+
+    let options = this.options().method('GET')
+    if (filters.snapsSubmitted) {
+      options = options.authorization()
+    }
+
+    const quests = await this.fetch<ApiResponse<QuestAttributes[]> & { total: number }>(`/quests${query}`, options)
+    return {
+      ...quests,
+      data: quests.data.map(quest => Governance.parseQuest(quest))
+    }
+  }
+
+  async getSnaps(filters: Partial<GetSnapsFilter> = {}) {
+    const params = new URLSearchParams(filters as any)
+    let query = params.toString()
+    if (query) {
+      query = '?' + query
+    }
+
+    let options = this.options().method('GET').authorization()
+
+    const snaps = await this.fetch<ApiResponse<SnapAttributes[]> & { total: number }>(`/snap${query}`, options)
+
+    return {
+      ...snaps,
+      data: Array.from(snaps.data).map(snap => Governance.parseSnap(snap))
+    }
+  }
+
+  async getCuratedSnaps(filters: Partial<GetSnapsFilter> = {}) {
+    const params = new URLSearchParams(filters as any)
+    let query = params.toString()
+    if (query) {
+      query = '?' + query
+    }
+
+    let options = this.options().method('GET')
+
+    const snaps = await this.fetch<ApiResponse<SnapAttributes[]> & { total: number }>(`/snap/curated${query}`, options)
+
+    return {
+      ...snaps,
+      data: Array.from(snaps.data).map(snap => Governance.parseSnap(snap))
+    }
+  }
+
 
   async createProposal<P extends keyof NewProposalMap>(path: P, proposal: NewProposalMap[P]) {
     const newProposal = await this.fetch<ApiResponse<ProposalAttributes>>(
@@ -193,6 +316,29 @@ export class Governance extends API {
 
   async getCommittee() {
     const result = await this.fetch<ApiResponse<string[]>>(`/committee`)
+    return result.data
+  }
+
+  async getPOITiles() {
+    const pois = await Catalyst.get().getPOIs()
+    let poiTiles: any = []
+    Promise.all(pois.map(async poi => {
+      let tile: any = await Land.get().getTile(poi)
+      poiTiles.push(tile)
+    }))
+    const result = await this.fetch<ApiResponse<string[]>>(`/committee`)
+    return result.data
+  }
+
+  async updateSnapStatus(snap_id: string, status: SnapStatus) {
+    const result = await this.fetch<ApiResponse<SnapAttributes>>(
+      `/snap/${snap_id}`,
+      this.options()
+        .method('PATCH')
+        .authorization()
+        .json({ status })
+    )
+
     return result.data
   }
 }

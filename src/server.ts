@@ -11,16 +11,18 @@ import metrics from 'decentraland-gatsby/dist/entities/Prometheus/routes'
 import handle from 'decentraland-gatsby/dist/entities/Route/handle'
 import RequestError from 'decentraland-gatsby/dist/entities/Route/error'
 import proposal from './entities/Proposal/routes'
+import snap from './entities/Snap/routes'
+import quest from './entities/Quest/routes'
 import score from './entities/Votes/routes'
 import subscription from './entities/Subscription/routes'
 import committee from './entities/Committee/routes'
 import social from './entities/Social/routes'
 import sitemap from './entities/Sitemap/routes'
-import { activateProposals, finishProposal } from './entities/Proposal/jobs'
+import { activateQuests, finishQuests } from './entities/Quest/jobs'
 
 const jobs = manager()
-jobs.cron('@eachMinute', activateProposals)
-jobs.cron('@eachMinute', finishProposal)
+jobs.cron('@eachMinute', activateQuests)
+jobs.cron('@eachMinute', finishQuests)
 
 const app = express()
 app.set('x-powered-by', false)
@@ -34,6 +36,8 @@ app.use('/api', [
   proposal,
   score,
   subscription,
+  snap,
+  quest,
   handle(async () => {
     throw new RequestError('NotFound', RequestError.NotFound)
   })

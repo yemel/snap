@@ -1,11 +1,11 @@
-import { ProposalStatus, ProposalType } from "../entities/Proposal/types";
+import { QuestCategory, QuestStatus } from "../entities/Quest/types";
 import API from 'decentraland-gatsby/dist/utils/api/API'
 
 const GATSBY_BASE_URL = process.env.GATSBY_BASE_URL || '/'
 export const WELCOME_STORE_KEY: string = 'org.decentraland.governance.welcome'
 export const WELCOME_STORE_VERSION: string = '1'
 
-export function toProposalListPage(value: string | number | null | undefined): number {
+export function toQuestListPage(value: string | number | null | undefined): number {
   if (typeof value === 'number') {
     return Math.max(1, value)
   } else if (typeof value === 'string') {
@@ -16,57 +16,55 @@ export function toProposalListPage(value: string | number | null | undefined): n
   }
 }
 
-export enum ProposalListView {
-  Enacted = 'enacted',
-  Onboarding = 'onboarding',
+export enum QuestListView {
+  Active = 'active'
 }
 
-export function toProposalListView(list: string | null | undefined): ProposalListView | null {
+export function toQuestListView(list: string | null | undefined): QuestListView | null {
   switch(list) {
-    case ProposalListView.Enacted:
-    case ProposalListView.Onboarding:
+    case QuestListView.Active:
       return list
     default:
       return null
   }
 }
 
-export type ProposalListPage = {
+export type QuestListPage = {
   page: string
 }
 
-export type ProposalListViewFilter = {
-  view: ProposalListView
+export type QuestListViewFilter = {
+  view: QuestListView
 }
 
-export type ProposalsStatusFilter = {
-  status: ProposalStatus
+export type QuestsStatusFilter = {
+  status: QuestStatus
 }
 
-export type ProposalsTypeFilter = {
-  type: ProposalType,
+export type QuestsCategoryFilter = {
+  type: QuestCategory,
 }
 
-export enum ProposalActivityList {
-  MyProposals = 'proposals',
+export enum QuestActivityList {
+  MySnaps = 'snaps',
   Watchlist = 'watchlist',
 }
 
-export function toProposalActivityList(list: string | null | undefined): ProposalActivityList | null {
+export function toQuestActivityList(list: string | null | undefined): QuestActivityList | null {
   switch(list) {
-    case ProposalActivityList.MyProposals:
-    case ProposalActivityList.Watchlist:
+    case QuestActivityList.MySnaps:
+    case QuestActivityList.Watchlist:
       return list
     default:
       return null
   }
 }
 
-export type ProposalActivityFilter = {
-  list: ProposalActivityList,
+export type QuestActivityFilter = {
+  list: QuestActivityList,
 }
 
-export type ProposalsModal = {
+export type QuestsModal = {
   modal: 'new'
 }
 
@@ -75,10 +73,11 @@ export function url(path: string = '/', query: Record<string, string> | URLSearc
 }
 
 export default {
-  proposals: (options: Partial<ProposalListPage & ProposalListViewFilter & ProposalsStatusFilter & ProposalsTypeFilter & ProposalsModal> | URLSearchParams = {}) => url('/', options),
-  proposal: (proposal: string) => url(`/proposal/`, { id: proposal }),
-  activity: (options: Partial<ProposalsStatusFilter & ProposalActivityFilter> | URLSearchParams = {}) => url(`/activity/`, options),
-  submit: (type?: ProposalType) => url(type ? `/submit/${String(type).replace('_','-')}/` : '/submit/', {}),
+  quests: (options: Partial<QuestListPage & QuestListViewFilter & QuestsStatusFilter & QuestsCategoryFilter & QuestsModal> | URLSearchParams = {}) => url('/quests', options),
+  quest: (quest: string) => url(`/quest/`, { id: quest }),
+  activity: (options: Partial<QuestsStatusFilter & QuestActivityFilter> | URLSearchParams = {}) => url(`/activity/`, options),
+  createQuest: (type?: QuestCategory) => url(type ? `/createQuest/${String(type).replace(/_/g,'-')}/` : '/createQuest/', {}),
+  submitSnap: (quest_id: string) => url(`/submitSnap/`, { quest_id: quest_id }),
   balance: (options: Partial<{ address: string }> = {}) => url(`/balance/`, options),
   welcome: () => url(`/welcome/`, {}),
 }

@@ -6,33 +6,32 @@ import useFormatMessage from "decentraland-gatsby/dist/hooks/useFormatMessage"
 import ContentLayout, { ContentSection } from "../../components/Layout/ContentLayout"
 import Head from "decentraland-gatsby/dist/components/Head/Head"
 import Paragraph from "decentraland-gatsby/dist/components/Text/Paragraph"
-import CategoryBanner from "../../components/Category/CategoryBanner"
+import CategoryBanner from "../../components/Quest/CategoryBanner"
 import { ProposalType } from "../../entities/Proposal/types"
+import {QuestCategory } from "../../entities/Quest/types"
 import locations from "../../modules/locations"
 // import { FeatureFlags } from "../../modules/features"
-import './submit.css'
+import './create.css'
 
-export default function NewProposalPage() {
+export default function NewQuestPage() {
   const l = useFormatMessage()
   // const [ ff ] = useFeatureFlagContext()
 
   return <>
   <Head
-    title={l('page.submit.title') || ''}
-    description={l('page.submit.description') || ''}
+    title={l('page.create.title') || ''}
+    description={l('page.create.description') || ''}
     image="https://decentraland.org/images/decentraland.png"
   />
   <ContentLayout className="ProposalDetailPage">
     <ContentSection>
-      <Header size="huge">{l('page.submit.title')} &nbsp;</Header>
-      <Paragraph>{l('page.submit.description') || ''}</Paragraph>
+      <Header size="huge">{l('page.create.title')} &nbsp;</Header>
+      <Paragraph>{l('page.create.description') || ''}</Paragraph>
     </ContentSection>
     <ContentSection>
-      <CategoryBanner type={ProposalType.Catalyst} href={locations.submit(ProposalType.Catalyst)} active />
-      <CategoryBanner type={ProposalType.POI} href={locations.submit(ProposalType.POI)} active />
-      <CategoryBanner type={ProposalType.BanName} href={locations.submit(ProposalType.BanName)} active />
-      <CategoryBanner type={ProposalType.Grant} href={locations.submit(ProposalType.Grant)} active />
-      <CategoryBanner type={ProposalType.Poll} href={locations.submit(ProposalType.Poll)} active />
+      <CategoryBanner type={QuestCategory.Event} href={locations.createQuest(QuestCategory.Event)} active />
+      <CategoryBanner type={QuestCategory.PointOfInterest} href={locations.createQuest(QuestCategory.PointOfInterest)} active />
+      <CategoryBanner type={QuestCategory.Other} href={locations.createQuest(QuestCategory.Other)} active />
     </ContentSection>
   </ContentLayout>
   </>

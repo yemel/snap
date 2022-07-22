@@ -18,7 +18,7 @@ export default function ContentLayout(props: ContentLayoutProps) {
     if((window as any).routeUpdate) {
       window.history.back()
     } else {
-      navigate(locations.proposals())
+      navigate(locations.quests())
     }
   }
 

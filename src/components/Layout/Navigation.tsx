@@ -3,7 +3,7 @@ import { Tabs } from 'decentraland-ui/dist/components/Tabs/Tabs'
 import useFormatMessage from 'decentraland-gatsby/dist/hooks/useFormatMessage'
 import useAuthContext from 'decentraland-gatsby/dist/context/Auth/useAuthContext'
 import { Link } from 'gatsby-plugin-intl'
-import locations, { ProposalActivityList, ProposalListView } from '../../modules/locations'
+import locations, { QuestActivityList, QuestListView } from '../../modules/locations'
 import './Navigation.css'
 
 export enum NavigationTab {
@@ -23,12 +23,12 @@ const Navigation = (props: NavigationProps) => {
   return (
     <Tabs>
       <Tabs.Left>
-        <Link to={locations.proposals()}>
+        <Link to={locations.quests()}>
           <Tabs.Tab active={props.activeTab === NavigationTab.Proposals}>
-            {l('navigation.proposals')}
+            QUESTS
           </Tabs.Tab>
         </Link>
-        <Link to={locations.proposals({ view: ProposalListView.Enacted })}>
+        {/* <Link to={locations.quests({ view: QuestListView.Active })}>
           <Tabs.Tab active={props.activeTab === NavigationTab.Enacted}>
             {l('navigation.enacted')}
           </Tabs.Tab>
@@ -38,11 +38,11 @@ const Navigation = (props: NavigationProps) => {
             {l('navigation.wrapping')}
           </Tabs.Tab>
         </Link>}
-        {user && <Link to={locations.activity({ list: ProposalActivityList.MyProposals })}>
+        {user && <Link to={locations.activity({ list: QuestActivityList.MySnaps })}>
           <Tabs.Tab active={props.activeTab === NavigationTab.Activity}>
             {l('navigation.activity')}
           </Tabs.Tab>
-        </Link>}
+        </Link>} */}
       </Tabs.Left>
     </Tabs>
   )

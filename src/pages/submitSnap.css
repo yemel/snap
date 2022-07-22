@@ -17,6 +17,17 @@
   background-image: url("../../public/submitSnapBack.jpg");
 }
 
+.ImagePreview {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+.Image {
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap");
 
 .app {

@@ -1,14 +1,30 @@
 {
+  "quest_category": {
+    "all_title": "All",
+    "all_description": "All",
+    "event_title": "Event",
+    "event_description": "Quest from an event",
+    "point_of_interest_title": "Point of Interest",
+    "point_of_interest_description": "Quest from a Point of Interest",
+    "other_title": "Other",
+    "other_description": "A custom quest"
+  },
+  "quest_status": {
+    "all": "All",
+    "pending": "Pending",
+    "active": "Active",
+    "finished": "Finished"
+  },
   "general": {
     "number": "{value, number}",
-    "count_proposals": "{count} {count, plural, one {proposal} other {proposals}}",
+    "count_quests": "{count} {count, plural, one {quest} other {quests}}",
     "count_votes": "{count} {count, plural, one {vote} other {votes}}",
     "sign_in": "sign in",
     "jump_in": "jump in",
     "cancel": "cancel"
   },
   "navigation": {
-    "proposals": "Proposals",
+    "proposals": "Quests",
     "wrapping": "Voting Power",
     "activity": "Activity",
     "enacted": "Enacted"
@@ -89,10 +105,10 @@
   },
   "category": {
     "poi": "POI",
-    "catalyst" : "Catalyst",
-    "ban_name" : "Ban Name",
-    "grant" : "Grant",
-    "poll" : "Poll",
+    "catalyst": "Catalyst",
+    "ban_name": "Ban Name",
+    "grant": "Grant",
+    "poll": "Poll",
     "all_title": "All proposals",
     "catalyst_title": "Catalyst Node",
     "catalyst_description": "Add a node to the network of community run servers",
@@ -261,6 +277,14 @@
       "delegations_from_title": "Your delegation",
       "delegations_from_you_empty": "You have not delegated your voting power",
       "delegations_from_address_empty": "This address has not delegated its voting power"
+    },
+    "create": {
+      "title": "Create a new quest",
+      "description": "Select a quest category!",
+      "button_submit": "Create Quest",
+      "character_counter": "({current} out of {limit} characters)",
+      "markdown_tooltip": " (markdown)",
+      "markdown_notice": "You can format your quest using markdown! Toggle the preview switch to see how your post will be displayed. "
     },
     "submit": {
       "title": "Submit Proposal",
